@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#80b2ff">
+  <title>Кэшбэк в подарок — T-Chess</title>
+  <meta name="description" content="Экран подарка за 10 активных дней шахматного марафона.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="reward-screen" id="reward-screen" aria-labelledby="reward-title" data-figma-node="316:22740">
+    <div class="snow-scene" aria-hidden="true">
+      <div class="snow-canvas art-canvas">
+        <img class="snow-layer" id="snow-layer" src="assets/snow.png" width="375" height="714" alt="" draggable="false">
+        <img class="snow-blur-layer" id="snow-blur-layer" src="assets/snow-motion-blur.png" width="367" height="566" alt="" draggable="false">
+      </div>
+    </div>
+
+    <header class="status-bar" aria-label="9:41, сеть, Wi-Fi, батарея">
+      <img class="status-time" src="assets/time.svg" alt="" aria-hidden="true" draggable="false">
+      <img class="status-signal" src="assets/signal-wifi.svg" alt="" aria-hidden="true" draggable="false">
+      <img class="status-battery" src="assets/battery.svg" alt="" aria-hidden="true" draggable="false">
+    </header>
+    <div class="app-bar" aria-hidden="true"></div>
+
+    <section class="gift-stage" aria-label="Белый подарок с жёлтой лентой в снегу">
+      <div class="gift-canvas art-canvas">
+        <img class="gift-glow" id="gift-glow" src="assets/gift-glow.svg" alt="" aria-hidden="true" draggable="false">
+        <div class="gift-layer" id="gift-layer" data-animation-target="gift">
+          <img class="gift-image" src="assets/gift.png" width="375" height="382" alt="" aria-hidden="true" draggable="false" fetchpriority="high">
+        </div>
+      </div>
+    </section>
+
+    <section class="message-container">
+      <div class="reward-copy" id="reward-copy">
+        <h1 id="reward-title"><span class="sr-only">Кэшбэк в подарок — ваш</span><span class="title-art-canvas" aria-hidden="true"><img class="title-art" src="assets/reward-title.svg" alt="" draggable="false"></span></h1>
+        <p><span class="sr-only">Набрали 10 дней в игре, так держать</span><span class="subtitle-art-canvas" aria-hidden="true"><img class="subtitle-art" src="assets/reward-subtitle.svg" alt="" draggable="false"></span></p>
+      </div>
+    </section>
+
+    <footer class="floating-actions" id="floating-actions">
+      <div class="footer-fade" aria-hidden="true"></div>
+      <div class="button-stack">
+        <button class="action action-primary" id="claim-prize" type="button"><span class="sr-only">Забрать приз</span><img class="claim-label" src="assets/claim-label.svg" alt="" aria-hidden="true" draggable="false"></button>
+        <a class="action action-secondary" href="../" id="go-home"><span class="sr-only">На главную</span><img class="home-label" src="assets/home-label.svg" alt="" aria-hidden="true" draggable="false"></a>
+      </div>
+      <div class="system-bottom-bar" aria-hidden="true"><div class="home-indicator"></div></div>
+    </footer>
+  </main>
+</body>
+</html>

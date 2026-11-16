@@ -1,0 +1,181 @@
+{
+  "source": {
+    "url": "https://www.figma.com/design/AjN75rJn2AFTKCodA15ef8/?node-id=316-22740",
+    "nodeId": "316:22740",
+    "name": "Success",
+    "referenceSize": {
+      "width": 375,
+      "height": 812
+    }
+  },
+  "rasterExportScale": 2,
+  "notes": [
+    "All artwork is exported from the original Figma layers through the authorized MCP session; none is redrawn or AI-generated.",
+    "Raster layers preserve source masks and ancestor clipping. Their transforms are baked into the local PNGs. Do not apply the original rotations or gift mask again.",
+    "Typography assets are the original SF Pro Rounded / SF Pro Text glyph outlines. Semantic text remains in the HTML. No font files are redistributed.",
+    "The full-screen reference render is used only for comparison and is not included in the implementation."
+  ],
+  "assets": [
+    {
+      "file": "assets/snow.png",
+      "nodeIds": [
+        "I316:22740;2565:61883"
+      ],
+      "slot": "background snowfall",
+      "rendered": {
+        "x": 0,
+        "y": 0,
+        "width": 375,
+        "height": 713.529542
+      }
+    },
+    {
+      "file": "assets/snow-motion-blur.png",
+      "nodeIds": [
+        "I316:22740;2565:61884"
+      ],
+      "slot": "background motion-blurred snowfall",
+      "rendered": {
+        "x": 0,
+        "y": 138.96,
+        "width": 366.970673,
+        "height": 565.46521
+      }
+    },
+    {
+      "file": "assets/gift.png",
+      "nodeIds": [
+        "I316:22740;742:65087;2693:75336",
+        "I316:22740;742:65087;2693:75337",
+        "I316:22740;742:65087;2693:75338"
+      ],
+      "slot": "gift image with its original foreground snow and mask",
+      "elementId": "gift-layer",
+      "rendered": {
+        "x": 0,
+        "y": 88,
+        "width": 375,
+        "height": 382
+      }
+    },
+    {
+      "file": "assets/gift-glow.svg",
+      "nodeIds": [
+        "I316:22740;742:65087;2693:75335"
+      ],
+      "slot": "original white glow behind the gift",
+      "rendered": {
+        "x": 0,
+        "y": 88,
+        "width": 375,
+        "height": 328
+      }
+    },
+    {
+      "file": "assets/time.svg",
+      "nodeIds": [
+        "I316:22740;118:23877;25750:604383"
+      ],
+      "slot": "9:41 status time",
+      "rendered": {
+        "x": 34,
+        "y": 17,
+        "width": 29,
+        "height": 12
+      }
+    },
+    {
+      "file": "assets/signal-wifi.svg",
+      "nodeIds": [
+        "I316:22740;118:23877;25751:641321"
+      ],
+      "slot": "status signal and Wi-Fi",
+      "rendered": {
+        "x": 294,
+        "y": 18,
+        "width": 63,
+        "height": 10
+      }
+    },
+    {
+      "file": "assets/battery.svg",
+      "nodeIds": [
+        "I316:22740;118:23877;25751:636692"
+      ],
+      "slot": "status battery",
+      "rendered": {
+        "x": 336,
+        "y": 17,
+        "width": 25,
+        "height": 12
+      }
+    },
+    {
+      "file": "assets/footer-mask.svg",
+      "nodeIds": [
+        "I316:22740;316:24316;44286:299512",
+        "I316:22740;316:24316;44286:299513",
+        "I316:22740;316:24316;44286:299514"
+      ],
+      "slot": "original footer white fill and alpha mask, exported together as SVG",
+      "rendered": {
+        "x": 0,
+        "y": 642,
+        "width": 375,
+        "height": 170
+      }
+    },
+    {
+      "file": "assets/reward-title.svg",
+      "nodeIds": [
+        "I316:22740;118:23886"
+      ],
+      "slot": "outlined SF Pro Rounded Bold heading",
+      "rendered": {
+        "x": 48.1875,
+        "y": 498.330078,
+        "width": 279,
+        "height": 73
+      }
+    },
+    {
+      "file": "assets/reward-subtitle.svg",
+      "nodeIds": [
+        "I316:22740;118:23887"
+      ],
+      "slot": "outlined SF Pro Text subtitle",
+      "rendered": {
+        "x": 40.324463,
+        "y": 587.083984,
+        "width": 296,
+        "height": 16
+      }
+    },
+    {
+      "file": "assets/claim-label.svg",
+      "nodeIds": [
+        "I316:22740;316:24316;44286:299516;41658:296911"
+      ],
+      "slot": "claim button text",
+      "rendered": {
+        "x": 134.405395,
+        "y": 663.25,
+        "width": 107,
+        "height": 16
+      }
+    },
+    {
+      "file": "assets/home-label.svg",
+      "nodeIds": [
+        "I316:22740;316:24316;44286:299517;42596:297182"
+      ],
+      "slot": "home link text",
+      "rendered": {
+        "x": 142.893798,
+        "y": 728.021973,
+        "width": 90,
+        "height": 16
+      }
+    }
+  ]
+}
