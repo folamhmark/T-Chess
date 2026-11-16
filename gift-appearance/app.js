@@ -15,9 +15,9 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const hasAnime = typeof window.anime === 'function';
   const MOTION = Object.freeze({
-    giftStart: 120, giftFade: 800, snowStart: 380, snowDuration: 2800,
-    titleStart: 2100, subtitleStart: 2240, primaryStart: 2460, secondaryStart: 2580,
-    flakesPerSide: 420, dustPerSide: 32,
+    giftStart: 80, giftFade: 700, snowStart: 240, snowDuration: 2300,
+    titleStart: 1720, subtitleStart: 1840, primaryStart: 2060, secondaryStart: 2180,
+    flakesPerSide: 330, dustPerSide: 24,
   });
   const animated = [gift, glow, title, subtitle, primary, secondary];
   const snowClock = { time: 0 };
@@ -123,8 +123,8 @@
           lift: (65 + random() * 210) * scale,
           fall: (100 + random() * 250) * scale,
           strength: dust ? .45 + random() * .3 : .75 + random() * .25,
-          duration: 1600 + random() * 600,
-          delay: random() * 420,
+          duration: 1350 + random() * 480,
+          delay: random() * 320,
         });
       }
     }
@@ -138,10 +138,10 @@
     const time = snowClock.time;
 
     // Soft banks from both edges merge into a short whiteout, then open for the copy.
-    const cloud = smooth((time - 220) / 580) * (1 - smooth((time - 1120) / 600));
+    const cloud = smooth((time - 160) / 460) * (1 - smooth((time - 900) / 500));
     if (cloud > 0) {
-      context.globalAlpha = cloud * .95;
-      const radius = Math.max(snowWidth, snowHeight) * (.5 + cloud * .8);
+      context.globalAlpha = cloud * .8;
+      const radius = Math.max(snowWidth, snowHeight) * (.5 + cloud * .75);
       for (const x of [-snowWidth * .15, snowWidth * 1.15]) {
         context.drawImage(dustSprite, x - radius, snowHeight * .5 - radius, radius * 2, radius * 2);
       }
@@ -198,23 +198,23 @@
       targets: gift,
       opacity: { value: [0, 1], duration: MOTION.giftFade, easing: 'easeInOutSine' },
       translateY: [
-        { value: -6, duration: 900, easing: 'easeOutCubic' },
-        { value: 0, duration: 420, easing: 'easeInOutSine' },
+        { value: -6, duration: 780, easing: 'easeOutCubic' },
+        { value: 0, duration: 360, easing: 'easeInOutSine' },
       ],
       scale: [
-        { value: 1.035, duration: 900, easing: 'easeOutCubic' },
-        { value: 1, duration: 420, easing: 'easeInOutSine' },
+        { value: 1.035, duration: 780, easing: 'easeOutCubic' },
+        { value: 1, duration: 360, easing: 'easeInOutSine' },
       ],
     }, MOTION.giftStart);
-    timeline.add({ targets: glow, opacity: [.25, 1], duration: 1200, easing: 'easeOutCubic' }, 180);
+    timeline.add({ targets: glow, opacity: [.25, 1], duration: 1050, easing: 'easeOutCubic' }, 140);
     timeline.add({
       targets: snowClock, time: [0, MOTION.snowDuration], duration: MOTION.snowDuration,
       easing: 'linear', update() { if (token === run) paintSnow(); },
     }, MOTION.snowStart);
-    timeline.add({ targets: title, opacity: [0, 1], translateY: [18, 0], scale: [.95, 1], duration: 640, easing: 'easeOutCubic' }, MOTION.titleStart);
-    timeline.add({ targets: subtitle, opacity: [0, 1], translateY: [14, 0], duration: 560, easing: 'easeOutCubic' }, MOTION.subtitleStart);
-    timeline.add({ targets: primary, opacity: [0, 1], translateY: [18, 0], duration: 600, easing: 'easeOutCubic', complete() { if (token === run) primary.disabled = false; } }, MOTION.primaryStart);
-    timeline.add({ targets: secondary, opacity: [0, 1], translateY: [14, 0], duration: 560, easing: 'easeOutCubic', complete() { if (token === run) secondary.inert = false; } }, MOTION.secondaryStart);
+    timeline.add({ targets: title, opacity: [0, 1], translateY: [18, 0], scale: [.95, 1], duration: 560, easing: 'easeOutCubic' }, MOTION.titleStart);
+    timeline.add({ targets: subtitle, opacity: [0, 1], translateY: [14, 0], duration: 500, easing: 'easeOutCubic' }, MOTION.subtitleStart);
+    timeline.add({ targets: primary, opacity: [0, 1], translateY: [18, 0], duration: 540, easing: 'easeOutCubic', complete() { if (token === run) primary.disabled = false; } }, MOTION.primaryStart);
+    timeline.add({ targets: secondary, opacity: [0, 1], translateY: [14, 0], duration: 500, easing: 'easeOutCubic', complete() { if (token === run) secondary.inert = false; } }, MOTION.secondaryStart);
     timeline.play();
     screen.dispatchEvent(new CustomEvent('gift:animationstart', { bubbles: true }));
   }
