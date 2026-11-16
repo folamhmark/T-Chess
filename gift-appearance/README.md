@@ -4,6 +4,8 @@
 
 [Открыть страницу](https://folamhmark.github.io/T-Chess/gift-appearance/) · [Исходный экран Figma](https://www.figma.com/design/AjN75rJn2AFTKCodA15ef8/?node-id=316-22740)
 
+[Полная спецификация анимации](specification.md) — состояния, точные тайминги, параметры снега, интеграция и критерии приёмки.
+
 ## Запуск
 
 Из корня репозитория:
