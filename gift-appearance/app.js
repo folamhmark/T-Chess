@@ -15,7 +15,7 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const hasAnime = typeof window.anime === 'function';
   const MOTION = Object.freeze({
-    giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1940,
+    giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1940, snowTail: 660,
     titleStart: 1720, subtitleStart: 1840, primaryStart: 2060, secondaryStart: 2180,
   });
   const animated = [gift, glow, title, subtitle, primary, secondary];
@@ -27,6 +27,7 @@
   let snowWidth = 375;
   let snowHeight = 812;
   let pixelRatio = 1;
+  let flakes = [];
 
   const clamp = value => Math.max(0, Math.min(1, value));
   const smooth = value => { const t = clamp(value); return t * t * (3 - 2 * t); };
@@ -51,6 +52,7 @@
     if (timeline) timeline.pause();
     if (hasAnime) window.anime.remove([...animated, snowClock]);
     clearSnow();
+    flakes = [];
     timeline = null;
     playing = false;
     replayButton.removeAttribute('aria-busy');
@@ -83,18 +85,41 @@
     pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     burst.width = Math.round(snowWidth * pixelRatio);
     burst.height = Math.round(snowHeight * pixelRatio);
+    let seed = 7641;
+    const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+    const scale = snowWidth / 375;
+    flakes = Array.from({ length: 220 }, () => {
+      const birth = 100 + random() * 1500;
+      const position = (1 - Math.cos(Math.PI * birth / MOTION.snowDuration)) / 2 * 7;
+      const segment = Math.min(6, Math.floor(position));
+      const fraction = position - segment;
+      const fromX = snowWidth * (segment % 2 ? 1.22 : -.22);
+      const toX = snowWidth * (segment % 2 ? -.22 : 1.22);
+      const angle = random() * Math.PI * 2;
+      const rim = snowHeight * .18 + (random() - .65) * 32 * scale;
+      const speed = (35 + random() * 110) * scale;
+      return {
+        birth, lifetime: 600 + random() * 350,
+        x: fromX + (toX - fromX) * fraction + Math.cos(angle) * rim,
+        y: snowHeight * (-.06 + position * .16) + Math.sin(angle) * rim,
+        vx: Math.cos(angle) * speed + (random() - .5) * 45 * scale,
+        vy: Math.sin(angle) * speed - 30 * scale,
+        gravity: (70 + random() * 90) * scale,
+        radius: (1 + random() * 2.4) * scale,
+        phase: random() * Math.PI * 2, flutter: (3 + random() * 8) * scale,
+      };
+    });
   }
 
   function paintSnow() {
     if (!context) return;
     clearSnow();
-    const progress = clamp(snowClock.time / MOTION.snowDuration);
-    if (progress >= 1) return;
+    const progress = (1 - Math.cos(Math.PI * clamp(snowClock.time / MOTION.snowDuration))) / 2;
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     context.globalCompositeOperation = 'source-over';
     context.globalAlpha = 1;
     context.fillStyle = '#fff';
-    context.fillRect(0, 0, snowWidth, snowHeight);
+    if (progress < 1) context.fillRect(0, 0, snowWidth, snowHeight);
     if (progress <= 0) return;
 
     const points = Array.from({ length: 8 }, (_, i) => ({
@@ -132,31 +157,19 @@
       context.globalCompositeOperation = 'source-over';
     }
 
-    // Small loose flakes follow the eraser's rim rather than bursting from the sides.
-    const scale = snowWidth / 375;
+    // Origins are fixed at birth; every flake then flies independently of the brush.
     context.fillStyle = '#fff';
-    for (let i = 0; i < 220; i += 1) {
-      const seed = Math.sin(i * 127.1 + 74.7) * 43758.5453;
-      const random = seed - Math.floor(seed);
-      const age = (snowClock.time / 620 + random) % 1;
-      let travel = distance * Math.max(0, progress - age * .075);
-      let index = 1;
-      for (; index < points.length - 1; index += 1) {
-        const length = Math.hypot(points[index].x - points[index - 1].x, points[index].y - points[index - 1].y);
-        if (travel <= length) break;
-        travel -= length;
-      }
-      const from = points[index - 1];
-      const to = points[index];
-      const length = Math.hypot(to.x - from.x, to.y - from.y);
-      const fraction = clamp(travel / length);
-      const angle = i * 2.39996 + age * .5;
-      const radius = snowHeight * .18 + (random - .65) * 32 * scale;
-      const x = from.x + (to.x - from.x) * fraction + Math.cos(angle) * radius;
-      const y = from.y + (to.y - from.y) * fraction + Math.sin(angle) * radius + age * 18 * scale;
-      context.globalAlpha = Math.sin(age * Math.PI) * .8 * smooth(progress / .07) * (1 - smooth((progress - .86) / .14));
+    for (const flake of flakes) {
+      const age = snowClock.time - flake.birth;
+      if (age <= 0 || age >= flake.lifetime) continue;
+      const seconds = age / 1000;
+      const drag = (1 - Math.exp(-1.8 * seconds)) / 1.8;
+      const flutter = (Math.sin(flake.phase + seconds * 7) - Math.sin(flake.phase)) * flake.flutter;
+      const x = flake.x + flake.vx * drag + flutter;
+      const y = flake.y + flake.vy * drag + .5 * flake.gravity * seconds * seconds;
+      context.globalAlpha = smooth(age / 70) * (1 - smooth((age / flake.lifetime - .45) / .55)) * .85;
       context.beginPath();
-      context.arc(x, y, (1 + random * 2.4) * scale, 0, Math.PI * 2);
+      context.ellipse(x, y, flake.radius, flake.radius * .85, flake.phase + seconds, 0, Math.PI * 2);
       context.fill();
     }
     context.globalAlpha = 1;
@@ -204,8 +217,8 @@
     }, MOTION.giftStart);
     timeline.add({ targets: glow, opacity: [.25, 1], duration: 1050, easing: 'easeOutCubic' }, 140);
     timeline.add({
-      targets: snowClock, time: [0, MOTION.snowDuration], duration: MOTION.snowDuration,
-      easing: 'easeInOutSine', update() { if (token === run) paintSnow(); },
+      targets: snowClock, time: [0, MOTION.snowDuration + MOTION.snowTail], duration: MOTION.snowDuration + MOTION.snowTail,
+      easing: 'linear', update() { if (token === run) paintSnow(); },
     }, MOTION.snowStart);
     timeline.add({ targets: title, opacity: [0, 1], translateY: [18, 0], scale: [.95, 1], duration: 560, easing: 'easeOutCubic' }, MOTION.titleStart);
     timeline.add({ targets: subtitle, opacity: [0, 1], translateY: [14, 0], duration: 500, easing: 'easeOutCubic' }, MOTION.subtitleStart);
@@ -244,7 +257,7 @@
     copy, actions: document.getElementById('floating-actions'),
     get isPlaying() { return playing; },
     get timeline() { return timeline; },
-    get particleCount() { return playing ? 220 : 0; },
+    get particleCount() { return flakes.filter(flake => snowClock.time > flake.birth && snowClock.time < flake.birth + flake.lifetime).length; },
     setGiftVisible(visible) { stop(); setFinalArtwork(); gift.style.opacity = visible ? '1' : '0'; },
   });
 })();
