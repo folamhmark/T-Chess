@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#80b2ff">
   <title>Кэшбэк в подарок — T-Chess</title>
   <meta name="description" content="Экран подарка за 10 активных дней шахматного марафона.">
-  <link rel="stylesheet" href="styles.css?v=gift-motion-1">
+  <link rel="stylesheet" href="styles.css?v=gift-motion-2">
   <script>
     if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
       document.documentElement.classList.add('motion-enabled');
@@ -16,7 +16,7 @@
     }
   </script>
   <script src="vendor/anime.min.js" defer></script>
-  <script src="app.js?v=gift-motion-1" defer></script>
+  <script src="app.js?v=gift-motion-2" defer></script>
 </head>
 <body>
   <main class="reward-screen" id="reward-screen" aria-labelledby="reward-title" data-figma-node="316:22740">
@@ -43,7 +43,7 @@
       </div>
     </section>
 
-    <div class="snow-burst" id="snow-burst" aria-hidden="true"></div>
+    <canvas class="snow-burst" id="snow-burst" aria-hidden="true"></canvas>
 
     <section class="message-container">
       <div class="reward-copy" id="reward-copy">
@@ -62,7 +62,7 @@
     </footer>
   </main>
   <div class="preview-tools">
-    <button class="replay-button" id="replay-animation" type="button" disabled>Повторить анимацию</button>
+    <button class="replay-button" id="replay-animation" type="button" aria-label="Повторить анимацию" title="Повторить анимацию" disabled><span class="replay-symbol" aria-hidden="true">↻</span><span class="replay-label">Повторить анимацию</span></button>
   </div>
 </body>
 </html>

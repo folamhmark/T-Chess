@@ -98,25 +98,30 @@ h1 { position: relative; height: calc(100cqw * 82 / 375); }
 .claim-label { position: absolute; left: calc(50% - 53.094605px); top: 21.25px; }
 .home-label { position: absolute; left: calc(50% - 44.606202px); top: 22.021973px; }
 
-/* Appearance motion is confined to the artwork; the approved copy and actions stay in place. */
-body { row-gap: 16px; align-content: center; }
-.motion-enabled #gift-layer { opacity: 0; transform: translateY(32px) scale(.97); }
+/* The snow is a front layer; controls for the study stay outside the phone. */
+body { align-content: center; }
+.motion-enabled #gift-layer { opacity: 0; transform: translateY(48px) scale(.88); }
 .motion-enabled #gift-glow { opacity: .25; }
-#gift-layer { will-change: transform, opacity; }
+.motion-enabled #reward-copy, .motion-enabled .action { opacity: 0; }
+#gift-layer, #reward-title, .reward-copy p, .action { will-change: transform, opacity; }
 #gift-glow { will-change: opacity; }
 .status-bar { z-index: 5; }
-.snow-burst { position: absolute; left: 0; top: 0; width: 100%; height: calc(88px + 100cqw * 382 / 375); overflow: hidden; pointer-events: none; z-index: 3; contain: layout paint; }
-.snow-fleck { position: absolute; left: 0; top: 0; border-radius: 50%; background: #fff; pointer-events: none; opacity: 0; will-change: transform, opacity; }
-.snow-fleck--dust { filter: blur(3px); }
+.snow-burst { position: absolute; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
 .message-container, .floating-actions { z-index: 4; }
-.preview-tools { width: min(375px, 100%); display: flex; justify-content: center; padding-bottom: 8px; }
-.replay-button { border: 1px solid #cbd6e5; border-radius: 12px; background: #ffffffcf; color: #40618a; padding: 12px 18px; min-height: 44px; font: inherit; font-size: 14px; cursor: pointer; }
+.preview-tools { position: fixed; top: 50%; left: calc(50% + 207px); right: 16px; max-width: 216px; display: flex; justify-content: flex-start; transform: translateY(-50%); z-index: 30; }
+.replay-button { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; border: 1px solid #cbd6e5; border-radius: 14px; background: #fffffff0; color: #40618a; padding: 12px 14px; min-height: 48px; font: inherit; font-size: 14px; cursor: pointer; box-shadow: 0 4px 16px #3455780b; }
+.replay-symbol { font-size: 24px; line-height: 1; }
 .replay-button:hover { background: #fff; }
 .replay-button:focus-visible { outline: 3px solid var(--reward-blue); outline-offset: 3px; }
 .replay-button:disabled { cursor: default; opacity: .5; }
-@media (max-width: 450px) { body { align-content: start; } .preview-tools { padding-bottom: 16px; } }
+@media (max-width: 740px) {
+  .preview-tools { left: auto; right: 10px; width: 46px; }
+  .replay-button { width: 46px; min-height: 46px; border-radius: 50%; padding: 10px; }
+  .replay-label { display: none; }
+}
+@media (max-width: 450px) { body { align-content: start; } }
 @media (prefers-reduced-motion: reduce) {
-  .motion-enabled #gift-layer { opacity: 1; transform: none; }
+  .motion-enabled #gift-layer, .motion-enabled #reward-copy, .motion-enabled .action { opacity: 1; transform: none; }
   .motion-enabled #gift-glow { opacity: 1; }
   .snow-burst { display: none; }
 }
