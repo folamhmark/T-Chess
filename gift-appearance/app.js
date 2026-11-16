@@ -140,7 +140,7 @@
     // Soft banks from both edges merge into a short whiteout, then open for the copy.
     const cloud = smooth((time - 160) / 460) * (1 - smooth((time - 900) / 500));
     if (cloud > 0) {
-      context.globalAlpha = cloud * .8;
+      context.globalAlpha = cloud * .74;
       const radius = Math.max(snowWidth, snowHeight) * (.5 + cloud * .75);
       for (const x of [-snowWidth * .15, snowWidth * 1.15]) {
         context.drawImage(dustSprite, x - radius, snowHeight * .5 - radius, radius * 2, radius * 2);
