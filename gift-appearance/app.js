@@ -15,7 +15,7 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const hasAnime = typeof window.anime === 'function';
   const MOTION = Object.freeze({
-    giftStart: 80, giftFade: 700, snowStart: 240, snowDuration: 2300,
+    giftStart: 80, giftFade: 700, snowStart: 240, snowDuration: 2850, snowFadeTail: 650,
     titleStart: 1720, subtitleStart: 1840, primaryStart: 2060, secondaryStart: 2180,
     flakesPerSide: 330, dustPerSide: 24,
   });
@@ -138,20 +138,24 @@
     const time = snowClock.time;
 
     // A barely visible haze accompanies the flakes without washing out the gift.
-    const cloud = smooth((time - 160) / 460) * (1 - smooth((time - 900) / 500));
+    const cloud = smooth((time - 160) / 460) * (1 - smooth((time - 900) / 900));
     if (cloud > 0) {
-      context.globalAlpha = cloud * .025;
+      context.globalAlpha = cloud * .09;
       const radius = Math.max(snowWidth, snowHeight) * (.5 + cloud * .75);
       for (const x of [-snowWidth * .15, snowWidth * 1.15]) {
         context.drawImage(dustSprite, x - radius, snowHeight * .5 - radius, radius * 2, radius * 2);
       }
     }
     for (const particle of particles) {
-      const t = clamp((time - particle.delay) / particle.duration);
-      if (t === 0 || t === 1) continue;
-      const x = particle.originX + particle.direction * particle.travel * (1 - Math.pow(1 - t, 1.35));
-      const y = particle.originY - 3.4 * particle.lift * t * (1 - t) + particle.fall * t * t;
-      const opacity = Math.min(1, t / .06) * (1 - smooth((t - .52) / .48));
+      const elapsed = time - particle.delay;
+      if (elapsed <= 0 || elapsed >= particle.duration + MOTION.snowFadeTail) continue;
+      const t = clamp(elapsed / particle.duration);
+      const tail = Math.max(0, elapsed - particle.duration);
+      const driftScale = snowWidth / 375;
+      const x = particle.originX + particle.direction * particle.travel * (1 - Math.pow(1 - t, 1.35)) + particle.direction * tail * .014 * driftScale;
+      const y = particle.originY - 3.4 * particle.lift * t * (1 - t) + particle.fall * t * t + tail * .026 * driftScale;
+      const fade = clamp((elapsed - particle.duration * .52) / (particle.duration * .48 + MOTION.snowFadeTail));
+      const opacity = Math.min(1, t / .06) * (1 - smooth(fade));
       context.globalAlpha = particle.strength * opacity;
       const size = particle.size * (.8 + Math.sin(t * Math.PI) * .5);
       if (particle.dust) {
