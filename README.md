@@ -12,7 +12,7 @@ T-Chess Prototype
 
 ## Gift Appearance
 
-Экран подарка с оригинальной графикой Figma, подготовленный для анимации появления.
+Экран подарка с оригинальной графикой Figma: плавное появление и снежный хлопок с краёв на Anime.js.
 
 - [Исходники и слои](gift-appearance/README.md)
 - [Открыть экран](https://folamhmark.github.io/T-Chess/gift-appearance/)
