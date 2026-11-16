@@ -1,15 +1,15 @@
-# Анимация прогресс-бара
+# Progress Bar Animation
 
 Интерактивный прототип экрана марафона на HTML, CSS и Anime.js 3.2.2.
 
-[Спецификация состояний и анимаций](SPEC.md)
+[State and Animation Specification](specification.md)
 
 ## Запуск
 
 Откройте `index.html` из этой папки в браузере или выполните из корня репозитория:
 
 ```sh
-cd "анимация прогресс бара"
+cd "progress-bar-animation"
 python3 -m http.server 3000
 ```
 
@@ -21,7 +21,7 @@ python3 -m http.server 3000
 - `styles.css` — оформление.
 - `app.js` — состояния и анимация прогресса.
 - `vendor/anime.min.js` — локальная копия Anime.js.
-- `SPEC.md` — спецификация состояний, размеров, цветов и анимации.
+- `specification.md` — State, Layout, Color and Animation Specification.
 
 ## Поведение
 
