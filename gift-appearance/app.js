@@ -135,7 +135,7 @@
     // Small loose flakes follow the eraser's rim rather than bursting from the sides.
     const scale = snowWidth / 375;
     context.fillStyle = '#fff';
-    for (let i = 0; i < 88; i += 1) {
+    for (let i = 0; i < 220; i += 1) {
       const seed = Math.sin(i * 127.1 + 74.7) * 43758.5453;
       const random = seed - Math.floor(seed);
       const age = (snowClock.time / 620 + random) % 1;
@@ -244,7 +244,7 @@
     copy, actions: document.getElementById('floating-actions'),
     get isPlaying() { return playing; },
     get timeline() { return timeline; },
-    get particleCount() { return playing ? 88 : 0; },
+    get particleCount() { return playing ? 220 : 0; },
     setGiftVisible(visible) { stop(); setFinalArtwork(); gift.style.opacity = visible ? '1' : '0'; },
   });
 })();
