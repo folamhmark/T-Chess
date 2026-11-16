@@ -2,7 +2,7 @@
 
 Интерактивный прототип экрана марафона на HTML, CSS и Anime.js 3.2.2.
 
-[State and Animation Specification](specification.md)
+[Full State and Animation Specification](specification.md)
 
 ## Запуск
 
