@@ -15,7 +15,7 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const hasAnime = typeof window.anime === 'function';
   const MOTION = Object.freeze({
-    giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1940, snowTail: 660,
+    giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1940, snowTail: 1260,
     titleStart: 1720, subtitleStart: 1840, primaryStart: 2060, secondaryStart: 2180,
   });
   const animated = [gift, glow, title, subtitle, primary, secondary];
@@ -88,7 +88,7 @@
     let seed = 7641;
     const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
     const scale = snowWidth / 375;
-    flakes = Array.from({ length: 220 }, () => {
+    flakes = Array.from({ length: 300 }, () => {
       const birth = 100 + random() * 1500;
       const position = (1 - Math.cos(Math.PI * birth / MOTION.snowDuration)) / 2 * 7;
       const segment = Math.min(6, Math.floor(position));
@@ -99,13 +99,13 @@
       const rim = snowHeight * .18 + (random() - .65) * 32 * scale;
       const speed = (35 + random() * 110) * scale;
       return {
-        birth, lifetime: 600 + random() * 350,
+        birth, lifetime: 1000 + random() * 500,
         x: fromX + (toX - fromX) * fraction + Math.cos(angle) * rim,
         y: snowHeight * (-.06 + position * .16) + Math.sin(angle) * rim,
         vx: Math.cos(angle) * speed + (random() - .5) * 45 * scale,
         vy: Math.sin(angle) * speed - 30 * scale,
         gravity: (70 + random() * 90) * scale,
-        radius: (1 + random() * 2.4) * scale,
+        radius: (1.4 + random() * 3.1) * scale,
         phase: random() * Math.PI * 2, flutter: (3 + random() * 8) * scale,
       };
     });
