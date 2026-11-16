@@ -122,7 +122,7 @@
           travel: (170 + random() * 340) * scale,
           lift: (65 + random() * 210) * scale,
           fall: (100 + random() * 250) * scale,
-          strength: dust ? .45 + random() * .3 : .75 + random() * .25,
+          strength: dust ? .02 + random() * .025 : .75 + random() * .25,
           duration: 1350 + random() * 480,
           delay: random() * 320,
         });
@@ -137,10 +137,10 @@
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     const time = snowClock.time;
 
-    // Soft banks from both edges merge into a short whiteout, then open for the copy.
+    // A barely visible haze accompanies the flakes without washing out the gift.
     const cloud = smooth((time - 160) / 460) * (1 - smooth((time - 900) / 500));
     if (cloud > 0) {
-      context.globalAlpha = cloud * .74;
+      context.globalAlpha = cloud * .025;
       const radius = Math.max(snowWidth, snowHeight) * (.5 + cloud * .75);
       for (const x of [-snowWidth * .15, snowWidth * 1.15]) {
         context.drawImage(dustSprite, x - radius, snowHeight * .5 - radius, radius * 2, radius * 2);
