@@ -15,9 +15,8 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const hasAnime = typeof window.anime === 'function';
   const MOTION = Object.freeze({
-    giftStart: 80, giftFade: 700, snowStart: 240, snowDuration: 2850, snowFadeTail: 650,
+    giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1560,
     titleStart: 1720, subtitleStart: 1840, primaryStart: 2060, secondaryStart: 2180,
-    flakesPerSide: 330, dustPerSide: 24,
   });
   const animated = [gift, glow, title, subtitle, primary, secondary];
   const snowClock = { time: 0 };
@@ -25,7 +24,6 @@
   let playing = false;
   let assetsReady = false;
   let run = 0;
-  let particles = [];
   let snowWidth = 375;
   let snowHeight = 812;
   let pixelRatio = 1;
@@ -41,27 +39,6 @@
     previousWidth = screen.clientWidth;
   }).observe(screen);
 
-  function randomGenerator(seed) {
-    return () => {
-      seed |= 0;
-      seed = seed + 0x6D2B79F5 | 0;
-      let value = Math.imul(seed ^ seed >>> 15, 1 | seed);
-      value = value + Math.imul(value ^ value >>> 7, 61 | value) ^ value;
-      return ((value ^ value >>> 14) >>> 0) / 4294967296;
-    };
-  }
-
-  // Reuse one soft sprite: hundreds of particles do not create hundreds of DOM nodes.
-  const dustSprite = document.createElement('canvas');
-  dustSprite.width = dustSprite.height = 128;
-  const dustContext = dustSprite.getContext('2d');
-  const dustGradient = dustContext.createRadialGradient(64, 64, 0, 64, 64, 64);
-  dustGradient.addColorStop(0, 'rgba(255,255,255,1)');
-  dustGradient.addColorStop(.4, 'rgba(255,255,255,.85)');
-  dustGradient.addColorStop(1, 'rgba(255,255,255,0)');
-  dustContext.fillStyle = dustGradient;
-  dustContext.fillRect(0, 0, 128, 128);
-
   function clearSnow() {
     if (context) {
       context.setTransform(1, 0, 0, 1, 0, 0);
@@ -73,7 +50,6 @@
     run += 1;
     if (timeline) timeline.pause();
     if (hasAnime) window.anime.remove([...animated, snowClock]);
-    particles = [];
     clearSnow();
     timeline = null;
     playing = false;
@@ -100,74 +76,61 @@
     }));
   }
 
+  // A broad soft eraser sweeps left/right, revealing the scene row by row.
   function buildSnow() {
-    const random = randomGenerator(7641);
     snowWidth = screen.clientWidth;
     snowHeight = screen.clientHeight;
     pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
     burst.width = Math.round(snowWidth * pixelRatio);
     burst.height = Math.round(snowHeight * pixelRatio);
-    const scale = snowWidth / 375;
-    const result = [];
-    for (const side of [-1, 1]) {
-      for (let i = 0; i < MOTION.flakesPerSide + MOTION.dustPerSide; i += 1) {
-        const dust = i >= MOTION.flakesPerSide;
-        const close = !dust && i % 6 === 0;
-        result.push({
-          dust,
-          size: (dust ? 50 + random() * 120 : close ? 12 + random() * 16 : 2 + random() * 7) * scale,
-          originX: side === -1 ? -18 * scale : snowWidth + 18 * scale,
-          originY: snowHeight * (.08 + random() * .94),
-          direction: side === -1 ? 1 : -1,
-          travel: (170 + random() * 340) * scale,
-          lift: (65 + random() * 210) * scale,
-          fall: (100 + random() * 250) * scale,
-          strength: dust ? .02 + random() * .025 : .75 + random() * .25,
-          duration: 1350 + random() * 480,
-          delay: random() * 320,
-        });
-      }
-    }
-    return result;
   }
 
   function paintSnow() {
     if (!context) return;
     clearSnow();
+    const progress = clamp(snowClock.time / MOTION.snowDuration);
+    if (progress >= 1) return;
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    const time = snowClock.time;
-
-    // A barely visible haze accompanies the flakes without washing out the gift.
-    const cloud = smooth((time - 160) / 460) * (1 - smooth((time - 900) / 900));
-    if (cloud > 0) {
-      context.globalAlpha = cloud * .09;
-      const radius = Math.max(snowWidth, snowHeight) * (.5 + cloud * .75);
-      for (const x of [-snowWidth * .15, snowWidth * 1.15]) {
-        context.drawImage(dustSprite, x - radius, snowHeight * .5 - radius, radius * 2, radius * 2);
-      }
-    }
-    for (const particle of particles) {
-      const elapsed = time - particle.delay;
-      if (elapsed <= 0 || elapsed >= particle.duration + MOTION.snowFadeTail) continue;
-      const t = clamp(elapsed / particle.duration);
-      const tail = Math.max(0, elapsed - particle.duration);
-      const driftScale = snowWidth / 375;
-      const x = particle.originX + particle.direction * particle.travel * (1 - Math.pow(1 - t, 1.35)) + particle.direction * tail * .014 * driftScale;
-      const y = particle.originY - 3.4 * particle.lift * t * (1 - t) + particle.fall * t * t + tail * .026 * driftScale;
-      const fade = clamp((elapsed - particle.duration * .52) / (particle.duration * .48 + MOTION.snowFadeTail));
-      const opacity = Math.min(1, t / .06) * (1 - smooth(fade));
-      context.globalAlpha = particle.strength * opacity;
-      const size = particle.size * (.8 + Math.sin(t * Math.PI) * .5);
-      if (particle.dust) {
-        context.drawImage(dustSprite, x - size / 2, y - size / 2, size, size);
-      } else {
-        context.fillStyle = '#fff';
-        context.beginPath();
-        context.ellipse(x, y, size / 2, size * .42, .4, 0, Math.PI * 2);
-        context.fill();
-      }
-    }
+    context.globalCompositeOperation = 'source-over';
     context.globalAlpha = 1;
+    context.fillStyle = '#fff';
+    context.fillRect(0, 0, snowWidth, snowHeight);
+    if (progress <= 0) return;
+
+    const points = Array.from({ length: 8 }, (_, i) => ({
+      x: snowWidth * (i % 2 ? 1.22 : -.22),
+      y: snowHeight * (-.06 + i * .16),
+    }));
+    const distance = points.slice(1).reduce((sum, point, i) =>
+      sum + Math.hypot(point.x - points[i].x, point.y - points[i].y), 0);
+    let remaining = distance * progress;
+    context.save();
+    context.globalCompositeOperation = 'destination-out';
+    context.lineWidth = snowHeight * .36;
+    context.lineCap = 'round';
+    context.lineJoin = 'round';
+    context.strokeStyle = '#fff';
+    context.shadowColor = '#fff';
+    context.shadowBlur = 12 * snowWidth / 375;
+    context.beginPath();
+    context.moveTo(points[0].x, points[0].y);
+    for (let i = 1; i < points.length && remaining > 0; i += 1) {
+      const from = points[i - 1];
+      const to = points[i];
+      const length = Math.hypot(to.x - from.x, to.y - from.y);
+      const portion = Math.min(1, remaining / length);
+      context.lineTo(from.x + (to.x - from.x) * portion, from.y + (to.y - from.y) * portion);
+      remaining -= length;
+    }
+    context.stroke();
+    context.restore();
+    // Clear the last soft edge without a cut at the end of the final sweep.
+    if (progress > .9) {
+      context.globalCompositeOperation = 'destination-out';
+      context.fillStyle = `rgba(0,0,0,${smooth((progress - .9) / .1)})`;
+      context.fillRect(0, 0, snowWidth, snowHeight);
+      context.globalCompositeOperation = 'source-over';
+    }
   }
 
   function replay() {
@@ -191,7 +154,7 @@
     }
     primary.disabled = true;
     secondary.inert = true;
-    particles = context ? buildSnow() : [];
+    if (context) buildSnow();
     snowClock.time = 0;
     paintSnow();
     timeline = window.anime.timeline({
@@ -213,7 +176,7 @@
     timeline.add({ targets: glow, opacity: [.25, 1], duration: 1050, easing: 'easeOutCubic' }, 140);
     timeline.add({
       targets: snowClock, time: [0, MOTION.snowDuration], duration: MOTION.snowDuration,
-      easing: 'linear', update() { if (token === run) paintSnow(); },
+      easing: 'easeInOutSine', update() { if (token === run) paintSnow(); },
     }, MOTION.snowStart);
     timeline.add({ targets: title, opacity: [0, 1], translateY: [18, 0], scale: [.95, 1], duration: 560, easing: 'easeOutCubic' }, MOTION.titleStart);
     timeline.add({ targets: subtitle, opacity: [0, 1], translateY: [14, 0], duration: 500, easing: 'easeOutCubic' }, MOTION.subtitleStart);
@@ -252,7 +215,7 @@
     copy, actions: document.getElementById('floating-actions'),
     get isPlaying() { return playing; },
     get timeline() { return timeline; },
-    get particleCount() { return particles.length; },
+    get particleCount() { return 0; },
     setGiftVisible(visible) { stop(); setFinalArtwork(); gift.style.opacity = visible ? '1' : '0'; },
   });
 })();
