@@ -15,7 +15,7 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const hasAnime = typeof window.anime === 'function';
   const MOTION = Object.freeze({
-    giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1560,
+    giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1940,
     titleStart: 1720, subtitleStart: 1840, primaryStart: 2060, secondaryStart: 2180,
   });
   const animated = [gift, glow, title, subtitle, primary, secondary];
@@ -131,6 +131,35 @@
       context.fillRect(0, 0, snowWidth, snowHeight);
       context.globalCompositeOperation = 'source-over';
     }
+
+    // Small loose flakes follow the eraser's rim rather than bursting from the sides.
+    const scale = snowWidth / 375;
+    context.fillStyle = '#fff';
+    for (let i = 0; i < 88; i += 1) {
+      const seed = Math.sin(i * 127.1 + 74.7) * 43758.5453;
+      const random = seed - Math.floor(seed);
+      const age = (snowClock.time / 620 + random) % 1;
+      let travel = distance * Math.max(0, progress - age * .075);
+      let index = 1;
+      for (; index < points.length - 1; index += 1) {
+        const length = Math.hypot(points[index].x - points[index - 1].x, points[index].y - points[index - 1].y);
+        if (travel <= length) break;
+        travel -= length;
+      }
+      const from = points[index - 1];
+      const to = points[index];
+      const length = Math.hypot(to.x - from.x, to.y - from.y);
+      const fraction = clamp(travel / length);
+      const angle = i * 2.39996 + age * .5;
+      const radius = snowHeight * .18 + (random - .65) * 32 * scale;
+      const x = from.x + (to.x - from.x) * fraction + Math.cos(angle) * radius;
+      const y = from.y + (to.y - from.y) * fraction + Math.sin(angle) * radius + age * 18 * scale;
+      context.globalAlpha = Math.sin(age * Math.PI) * .8 * smooth(progress / .07) * (1 - smooth((progress - .86) / .14));
+      context.beginPath();
+      context.arc(x, y, (1 + random * 2.4) * scale, 0, Math.PI * 2);
+      context.fill();
+    }
+    context.globalAlpha = 1;
   }
 
   function replay() {
@@ -215,7 +244,7 @@
     copy, actions: document.getElementById('floating-actions'),
     get isPlaying() { return playing; },
     get timeline() { return timeline; },
-    get particleCount() { return 0; },
+    get particleCount() { return playing ? 88 : 0; },
     setGiftVisible(visible) { stop(); setFinalArtwork(); gift.style.opacity = visible ? '1' : '0'; },
   });
 })();
