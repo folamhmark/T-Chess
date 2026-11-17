@@ -15,12 +15,13 @@
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const hasAnime = typeof window.anime === 'function';
   const MOTION = Object.freeze({
-    giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1940, snowTail: 1260,
+    whiteHold: 500, giftStart: 80, giftFade: 700, snowStart: 80, snowDuration: 1940, snowTail: 1260,
     titleStart: 1720, subtitleStart: 1840, primaryStart: 2060, secondaryStart: 2180,
   });
   const animated = [gift, glow, title, subtitle, primary, secondary];
   const snowClock = { time: 0 };
   let timeline = null;
+  let leadInTimer = null;
   let playing = false;
   let assetsReady = false;
   let run = 0;
@@ -49,6 +50,9 @@
 
   function stop() {
     run += 1;
+    clearTimeout(leadInTimer);
+    leadInTimer = null;
+    screen.classList.remove('anticipating');
     if (timeline) timeline.pause();
     if (hasAnime) window.anime.remove([...animated, snowClock]);
     clearSnow();
@@ -185,6 +189,7 @@
     const token = run;
     playing = true;
     replayButton.setAttribute('aria-busy', 'true');
+    screen.classList.add('anticipating');
     document.documentElement.classList.remove('motion-enabled');
     copy.style.opacity = '1';
     gift.style.opacity = '0';
@@ -224,8 +229,14 @@
     timeline.add({ targets: subtitle, opacity: [0, 1], translateY: [14, 0], duration: 500, easing: 'easeOutCubic' }, MOTION.subtitleStart);
     timeline.add({ targets: primary, opacity: [0, 1], translateY: [18, 0], duration: 540, easing: 'easeOutCubic', complete() { if (token === run) primary.disabled = false; } }, MOTION.primaryStart);
     timeline.add({ targets: secondary, opacity: [0, 1], translateY: [14, 0], duration: 500, easing: 'easeOutCubic', complete() { if (token === run) secondary.inert = false; } }, MOTION.secondaryStart);
-    timeline.play();
-    screen.dispatchEvent(new CustomEvent('gift:animationstart', { bubbles: true }));
+    // Hold a clean white screen before playing the unchanged effect.
+    leadInTimer = setTimeout(() => {
+      leadInTimer = null;
+      if (token !== run) return;
+      screen.classList.remove('anticipating');
+      timeline.play();
+      screen.dispatchEvent(new CustomEvent('gift:animationstart', { bubbles: true }));
+    }, MOTION.whiteHold);
   }
 
   primary.addEventListener('click', () => {
