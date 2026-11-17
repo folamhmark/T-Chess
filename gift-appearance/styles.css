@@ -125,3 +125,14 @@ body { align-content: center; }
   .motion-enabled #gift-glow { opacity: 1; }
   .snow-burst { display: none; }
 }
+
+/* A static anticipation beat; no scene or system elements show through. */
+.motion-enabled .reward-screen::after,
+.reward-screen.anticipating::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  background: #fff;
+  pointer-events: none;
+}
