@@ -1,14 +1,13 @@
 
 (()=>{'use strict';const $=s=>document.querySelector(s),reduced=matchMedia('(prefers-reduced-motion: reduce)'),messages=['Поставьте мат в три хода','Поставьте мат в два хода','Найдите лучший ход белых','Выиграйте ферзя соперника','Поставьте мат в один ход'];let current=1,completed=0,token=0,active=[];const digit=$('#digit'),incoming=$('#incoming'),copy=$('#copy'),bubble=$('#bubble');incoming.style.opacity=0;
-const progress=$('.progress'),fill=$('#progress-fill'),sheen=$('.progress-sheen');
+const progress=$('.progress'),fill=$('#progress-fill');
 function setProgress(value,animated=true){
- const old=completed;completed=Math.max(0,Math.min(5,value));
- anime.remove([fill,sheen]);sheen.style.opacity='0';
+ completed=Math.max(0,Math.min(5,value));
+ anime.remove(fill);
  progress.setAttribute('aria-valuenow',String(completed));progress.setAttribute('aria-valuetext',`Пройдено ${completed} из 5 задач`);
  const width=`${completed*20}%`,factor=$('#slow').checked?3:1;
  if(!animated||reduced.matches){fill.style.width=width;return}
  anime({targets:fill,width,duration:620*factor,easing:'cubicBezier(.22,1,.36,1)'});
- if(completed>old)anime({targets:sheen,translateX:['-100%','100%'],opacity:[{value:.65,duration:160*factor},{value:0,duration:400*factor}],delay:140*factor,duration:560*factor,easing:'easeOutQuad'});
 }
 setProgress(0,false);
 function stop(){token++;active.forEach(a=>a.pause());active=[];anime.remove([digit,incoming,copy,bubble,...copy.querySelectorAll('.copy-char')]);bubble.style.cssText="";digit.style.cssText='';incoming.style.cssText='opacity:0';copy.style.cssText=''}
