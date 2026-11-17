@@ -16,3 +16,10 @@ T-Chess Prototype
 
 - [Исходники и слои](gift-appearance/README.md)
 - [Открыть экран](https://folamhmark.github.io/T-Chess/gift-appearance/)
+
+## Daily Tasks Animation
+
+Экран задач дня: плавный счётчик, появление бабла и текста, промежуточная шторка «Верный ход».
+
+- [Исходники и запуск](daily-tasks-animation/README.md)
+- [Открыть прототип](https://folamhmark.github.io/T-Chess/daily-tasks-animation/)
