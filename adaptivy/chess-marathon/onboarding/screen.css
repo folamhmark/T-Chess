@@ -9,6 +9,8 @@
 :root {
   color-scheme: light;
   font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   color: #333;
   background: #fff;
   --action: #235ba5;
@@ -20,6 +22,7 @@
   --width-delta: calc(100vw - 320px);
   --copy-inset: clamp(20px, calc(20px + var(--width-delta) * 4 / 55), 24px);
   --copy-block: clamp(16px, calc(16px + var(--width-delta) * 4 / 55), 20px);
+  --wide-spacing: clamp(0px, calc((100vw - 375px) * 10 / 39), 10px);
   --title-size: clamp(24px, calc(24px + var(--width-delta) * 6 / 55), 30px);
   --body-size: clamp(16px, calc(16px + var(--width-delta) / 55), 17px);
   --button-inset: 16px;
@@ -74,6 +77,7 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
   display: flex;
   flex-direction: column;
   overflow: auto;
+  overscroll-behavior: none;
   overflow-wrap: anywhere;
   scrollbar-width: none;
 }
@@ -83,25 +87,36 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 .illustration {
   /* Reserve enough height for the full-width case, even if the body must scroll. */
   --min-art-height: calc(100vw * 273 / 375);
+  /* The outer two source pixels on each side are partly transparent. */
+  --painted-art-width: 559;
+  --image-height: calc(100cqw * 573 / var(--painted-art-width));
+  --bottom-crop: max(0px, calc((var(--image-height) - 100cqh) * var(--bottom-crop-share, .34)));
   position: relative;
   flex: 1 0 var(--min-art-height);
   container-type: size;
   overflow: hidden;
+}
+
+.illustration::before {
+  /* Keep the color transition aligned with the snow in the cropped image. */
+  --snow-line: calc(100cqh - var(--image-height) * .32 + var(--bottom-crop));
+  content: "";
+  position: absolute;
+  inset: 0;
   background: url("assets/snow-blur.png") left top calc(var(--snow-blur-offset) - var(--header-height)) / var(--snow-blur-width) auto no-repeat,
     url("assets/snow.png") left top calc(0px - var(--header-height)) / 100% auto no-repeat,
-    linear-gradient(#d6e6fe, #80b2ff 70%, white 84%);
+    linear-gradient(#d6e6fe, #80b2ff var(--snow-line), #fff);
 }
 
 .prize {
   /* Trim transparent headroom and the outer snow instead of shrinking the case. */
-  --image-height: calc(100cqw * 573 / 563);
-  --bottom-crop: max(0px, calc((var(--image-height) - 100cqh) * var(--bottom-crop-share, .34)));
   --bottom-edge: calc(100% - var(--bottom-crop));
   position: absolute;
-  inset-inline: 0;
+  left: 50%;
   bottom: calc(0px - var(--bottom-crop));
-  width: 100%;
+  width: calc(100% * 563 / var(--painted-art-width));
   height: auto;
+  transform: translateX(-50%);
   mask-image: linear-gradient(to bottom, black calc(var(--bottom-edge) - var(--snow-fade, 16px)), transparent var(--bottom-edge));
 }
 
@@ -111,15 +126,15 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: var(--copy-block) var(--copy-inset);
+  padding: calc(var(--copy-block) + var(--wide-spacing)) var(--copy-inset);
 }
 
 .details h1 {
-  margin: 0 0 12px;
+  margin: 0 0 calc(12px + var(--wide-spacing) / 2);
   font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
   font-size: var(--title-size);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: normal;
   letter-spacing: .36px;
 }
 
@@ -139,32 +154,22 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 }
 
 .details p {
-  margin: 16px 0 0;
+  margin: calc(16px + var(--wide-spacing) / 2) 0 0;
   font-size: var(--body-size);
   line-height: 20px;
   letter-spacing: -.41px;
 }
 
 .screen-footer {
-  position: relative;
   padding: 0 var(--button-inset);
   background: #fff;
-}
-
-.screen-footer::before {
-  content: "";
-  position: absolute;
-  inset: auto 0 100%;
-  height: 10px;
-  background: linear-gradient(transparent, white);
-  pointer-events: none;
 }
 
 .start {
   display: block;
   width: 100%;
   min-height: 56px;
-  margin-bottom: var(--button-bottom);
+  margin-bottom: calc(var(--button-bottom) + var(--wide-spacing));
   padding: 12px 16px;
   border-radius: 16px;
   color: inherit;
@@ -180,11 +185,11 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
     --top-inset: 32px;
     --copy-block: 8px;
     --button-bottom: 6px;
+    --wide-spacing: 0px;
   }
 
-  .illustration { --min-art-height: calc(100vw * 253 / 375); }
-
-  .prize {
+  .illustration {
+    --min-art-height: calc(100vw * 253 / 375);
     --bottom-crop-share: .39;
     --snow-fade: 10px;
   }
@@ -192,4 +197,8 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
   .details h1 { margin-bottom: 6px; }
   .deadline { min-height: 24px; }
   .details p { margin-top: 8px; }
+}
+
+@media (max-width: 340px) {
+  .details p br:first-of-type { display: none; }
 }
