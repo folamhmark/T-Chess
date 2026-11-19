@@ -23,3 +23,10 @@ T-Chess Prototype
 
 - [Исходники и запуск](daily-tasks-animation/README.md)
 - [Открыть прототип](https://folamhmark.github.io/T-Chess/daily-tasks-animation/)
+
+## Адаптивы
+
+Шахматный марафон, Onboarding на ширинах 320, 375 и 430 px.
+
+- [Сравнение размеров](https://folamhmark.github.io/T-Chess/adaptivy/)
+- [Правила адаптации и исходники](adaptivy/)

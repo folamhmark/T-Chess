@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Шахматный марафон с призами</title>
+  <link rel="stylesheet" href="screen.css">
+</head>
+<body>
+  <main class="screen" aria-labelledby="marathon-title">
+    <header class="screen-header">
+      <div class="status-bar" aria-hidden="true">
+        <img class="status-time" src="assets/time.svg" alt="" width="29" height="12">
+        <img class="status-signal" src="assets/signal-wifi.svg" alt="" width="63" height="10">
+        <img class="status-battery" src="assets/battery.svg" alt="" width="25" height="12">
+      </div>
+      <div class="app-bar">
+        <button class="close" type="button">Закрыть</button>
+      </div>
+    </header>
+
+    <div class="screen-content" role="region" aria-label="Описание марафона" tabindex="0">
+      <div class="illustration" aria-hidden="true">
+        <img class="prize" src="assets/prize-scene.png" alt="" width="563" height="573">
+      </div>
+
+      <section class="details">
+        <h1 id="marathon-title">Шахматный марафон с&nbsp;призами</h1>
+        <span class="deadline"><img src="assets/clock.svg" alt="" width="16" height="16">До 1 апреля</span>
+        <p>Наберите 20 активных дней<br>— и получите часть призового фонда<br><span class="amount">1&nbsp;000&nbsp;000&nbsp;₽</span></p>
+      </section>
+    </div>
+
+    <footer class="screen-footer">
+      <button class="start" type="button">Начать марафон</button>
+      <div class="bottom-bar" aria-hidden="true"></div>
+    </footer>
+  </main>
+</body>
+</html>
