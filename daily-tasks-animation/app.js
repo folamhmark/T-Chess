@@ -27,7 +27,7 @@ const chars=[...copy.querySelectorAll('.copy-char')];active.push(anime({targets:
 const sheet=$('#result-sheet'),continueButton=$('#continue-task');
 const scene=$('.task-scene'),penguin=$('.penguin');
 const nextButton=$('#next'),replayButton=$('#replay');
-const finalMotion={drop:420,fadeStart:460,fade:340};
+const finalMotion={drop:480,fade:420};
 let sheetOpen=false,sheetClosing=false,finalExit=null;
 const sheetControls=()=>[...document.querySelectorAll('[data-task],#next,#replay,.hint,.back')];
 function showResult(){if(sheetOpen)return;stop();copy.textContent=messages[current-1];digit.textContent=current;setProgress(current);sheetOpen=true;sheetClosing=false;sheetControls().forEach(b=>b.disabled=true);continueButton.textContent=current===5?'ОК':'Ого, погнали дальше';continueButton.disabled=false;sheet.hidden=false;$('#phase').textContent='Верный ход';$('#announcement').textContent=`Верный ход. Пройдено ${completed} из 5 задач. Можно продолжить.`;const finish=()=>{if(sheetOpen&&!sheetClosing)continueButton.focus()};if(reduced.matches){sheet.style.transform='none';finish()}else active.push(anime({targets:sheet,translateY:[178,0],duration:460*($('#slow').checked?3:1),easing:'cubicBezier(.16,1,.3,1)',complete:finish}));}
@@ -67,13 +67,13 @@ function closeResult(advance){
   const factor=$('#slow').checked?3:1;
   const sheetMotion={targets:sheet,translateY:178,duration:260*factor,easing:'cubicBezier(.4,0,.8,.2)'};
   if(advance&&current===5){
-    $('#duration').textContent=reduced.matches?'Без движения':`${(finalMotion.fadeStart+finalMotion.fade)*factor} мс`;
+    $('#duration').textContent=reduced.matches?'Без движения':`${(finalMotion.drop+finalMotion.fade)*factor} мс`;
     if(reduced.matches){finishRound();return}
     $('#phase').textContent='Завершаем задачи…';
     finalExit=anime.timeline({autoplay:false,complete:finishRound})
       .add({...sheetMotion,complete:hideSheet},0)
-      .add({targets:penguin,translateY:['0px','100px'],duration:finalMotion.drop*factor,easing:'cubicBezier(.42,0,.68,1)'},0)
-      .add({targets:scene,opacity:[1,0],duration:finalMotion.fade*factor,easing:'cubicBezier(.4,0,.2,1)'},finalMotion.fadeStart*factor);
+      .add({targets:penguin,translateY:['0px','100px'],duration:finalMotion.drop*factor,easing:'cubicBezier(.42,0,.56,1)'},0)
+      .add({targets:scene,opacity:[1,0],duration:finalMotion.fade*factor,easing:'easeInOutSine'},finalMotion.drop*factor);
     finalExit.play();
     return;
   }
