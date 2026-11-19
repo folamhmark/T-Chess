@@ -123,16 +123,31 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
     linear-gradient(#d6e6fe, #80b2ff var(--snow-line), #fff);
 }
 
+.illustration::after {
+  /* Keep the fade over the foreground snow after the image is cropped. */
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: auto 0 0;
+  height: calc(var(--image-height) * .22 - var(--bottom-crop));
+  background: linear-gradient(to bottom,
+    rgb(255 255 255 / 0),
+    rgb(255 255 255 / .08) 20%,
+    rgb(255 255 255 / .32) 40%,
+    rgb(255 255 255 / .69) 65%,
+    rgb(255 255 255 / .92) 85%,
+    #fff);
+  pointer-events: none;
+}
+
 .prize {
-  /* Trim transparent headroom and the outer snow instead of shrinking the case. */
-  --bottom-edge: calc(100% - var(--bottom-crop));
+  /* Position the full-width image within the cropped illustration. */
   position: absolute;
   left: 50%;
   bottom: calc(0px - var(--bottom-crop));
   width: calc(100% * 563 / var(--painted-art-width));
   height: auto;
   transform: translateX(-50%);
-  mask-image: linear-gradient(to bottom, black calc(var(--bottom-edge) - var(--snow-fade, 16px)), transparent var(--bottom-edge));
 }
 
 .details {
@@ -206,7 +221,6 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
   .illustration {
     --min-art-height: calc(100vw * 253 / 375);
     --bottom-crop-share: .39;
-    --snow-fade: 10px;
   }
 
   .details h1 { margin-bottom: 6px; }
