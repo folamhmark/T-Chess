@@ -190,3 +190,27 @@ body { margin: 0; }
   .lesson-card h1 { margin-block: 3px; }
   .penguin, .bubble::before { display: none; }
 }
+
+@media (max-width: 340px) and (max-height: 610px) {
+  :root {
+    --content-top: 8px;
+    --content-bottom: 14px;
+    --section-gap: 12px;
+    --card-extra-gap: 0px;
+    --card-top: 12px;
+    --card-bottom: 12px;
+  }
+
+  .lesson-label { display: none; }
+
+  .lesson-card h1 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+
+  .board {
+    width: calc(100% - 16px);
+    margin: 10px auto 0;
+  }
+}
