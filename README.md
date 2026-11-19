@@ -26,7 +26,7 @@ T-Chess Prototype
 
 ## Адаптивы
 
-Шахматный марафон, Onboarding на ширинах 320, 375 и 430 px.
+Шахматный марафон, Onboarding в размерах 375 × 812, 414 × 896, 375 × 667 и 320 × 568 px.
 
 - [Сравнение размеров](https://folamhmark.github.io/T-Chess/adaptivy/)
 - [Правила адаптации и исходники](adaptivy/)

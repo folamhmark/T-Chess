@@ -1,6 +1,14 @@
+@font-face {
+  font-family: "Inter";
+  src: url("assets/inter-variable.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
-  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
   color: #333;
   background: #fff;
   --action: #235ba5;
@@ -108,11 +116,11 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 
 .details h1 {
   margin: 0 0 12px;
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
   font-size: var(--title-size);
   font-weight: 700;
   line-height: 1.2;
-  letter-spacing: .2px;
+  letter-spacing: .36px;
 }
 
 .deadline {
@@ -133,7 +141,7 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 .details p {
   margin: 16px 0 0;
   font-size: var(--body-size);
-  line-height: 1.1765;
+  line-height: 20px;
   letter-spacing: -.41px;
 }
 
@@ -181,8 +189,7 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
     --snow-fade: 10px;
   }
 
-  .details h1 { margin-bottom: 6px; line-height: 1.14; }
+  .details h1 { margin-bottom: 6px; }
   .deadline { min-height: 24px; }
-  .details p { margin-top: 8px; line-height: 1.235; }
-  .details br:first-of-type { display: none; }
+  .details p { margin-top: 8px; }
 }

@@ -9,7 +9,7 @@
 body { margin: 0; }
 
 main {
-  max-width: 1340px;
+  max-width: 1700px;
   margin-inline: auto;
   padding: clamp(20px, 4vw, 56px) clamp(16px, 4vw, 52px) 32px;
 }
@@ -74,12 +74,24 @@ a {
 .comparison,
 .custom-frame { overflow-x: auto; padding: 24px 1px 20px; }
 
+.comparison { container-type: inline-size; }
+
 .frames {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, max-content);
   align-items: start;
   gap: 24px;
   width: max-content;
   margin-inline: auto;
+}
+
+@container (width < 1556px) {
+  .frames { grid-template-columns: repeat(2, max-content); }
+}
+
+@container (width < 813px) {
+  .frames { grid-template-columns: max-content; }
+  .frames figure { justify-self: start; }
 }
 
 figure { margin: 0; }
