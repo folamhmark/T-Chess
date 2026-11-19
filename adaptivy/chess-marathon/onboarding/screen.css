@@ -3,7 +3,7 @@
   font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
   color: #333;
   background: #fff;
-  --action: #428bf9;
+  --action: #235ba5;
   --accent: #ffdd2d;
   --top-inset: 44px;
   --bottom-inset: 34px;
@@ -87,14 +87,14 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 .prize {
   /* Trim transparent headroom and the outer snow instead of shrinking the case. */
   --image-height: calc(100cqw * 573 / 563);
-  --bottom-crop: max(0px, calc((var(--image-height) - 100cqh) * .34));
+  --bottom-crop: max(0px, calc((var(--image-height) - 100cqh) * var(--bottom-crop-share, .34)));
   --bottom-edge: calc(100% - var(--bottom-crop));
   position: absolute;
   inset-inline: 0;
   bottom: calc(0px - var(--bottom-crop));
   width: 100%;
   height: auto;
-  mask-image: linear-gradient(to bottom, black calc(var(--bottom-edge) - 16px), transparent var(--bottom-edge));
+  mask-image: linear-gradient(to bottom, black calc(var(--bottom-edge) - var(--snow-fade, 16px)), transparent var(--bottom-edge));
 }
 
 .details {
@@ -166,3 +166,23 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 .start:active { background: #f2ce1e; }
 .bottom-bar { display: flex; align-items: end; justify-content: center; height: var(--bottom-inset); padding-bottom: 8px; }
 .bottom-bar::before { content: ""; width: 133px; height: 5px; border-radius: 100px; background: black; }
+
+@media (max-height: 744px) {
+  :root {
+    --top-inset: 32px;
+    --copy-block: 8px;
+    --button-bottom: 6px;
+  }
+
+  .illustration { --min-art-height: calc(100vw * 253 / 375); }
+
+  .prize {
+    --bottom-crop-share: .39;
+    --snow-fade: 10px;
+  }
+
+  .details h1 { margin-bottom: 6px; line-height: 1.14; }
+  .deadline { min-height: 24px; }
+  .details p { margin-top: 8px; line-height: 1.235; }
+  .details br:first-of-type { display: none; }
+}
