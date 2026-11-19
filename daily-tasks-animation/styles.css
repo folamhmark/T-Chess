@@ -12,12 +12,43 @@
 .bubble{left:163px;top:240px;width:196px;height:60px;padding:12px 16px;border-radius:8px;background:#fff;transform-origin:0% 75%;letter-spacing:-.24px}.tail{position:absolute;left:-8px;top:15px}
 .board{position:absolute;left:16px;top:340px;width:343px;height:343px;border:1.5px solid #e8edf9;background:#e8edf9;border-radius:6px}.square{position:absolute;width:42px;height:42px;margin:2px;border-radius:2.333px;overflow:hidden}.square.light{background:#edf4ff}.square.dark{background:#c0d6f5;box-shadow:inset .534px .534px 3.737px #586b9866}.piece{position:absolute;left:50%;top:calc(50% - .58px);width:37.333px;height:37.333px;transform:translate(-50%,-50%)}.piece img{display:block;transform:scale(.98245);transform-origin:top left}
 .footer{position:absolute;left:16px;top:705px;width:343px;display:flex;justify-content:space-between;align-items:center}.footer button{padding:0;border:0;background:none;display:block;line-height:0}.history{display:flex}.footer img{display:block}.hint{cursor:pointer}
-.copy-word{display:inline-block;white-space:nowrap}.copy-char{display:inline-block;will-change:opacity,filter;vertical-align:baseline}#copy{display:block;min-height:36px}
+.copy-word{display:inline-block;white-space:nowrap}.copy-char{display:inline-block;will-change:opacity,filter;vertical-align:baseline}#copy{position:relative;display:block;min-height:36px}
 .result-sheet{position:absolute;z-index:10;bottom:0;left:0;width:375px;display:flex;flex-direction:column;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 6px 34px #0000001f;will-change:transform}.result-sheet[hidden]{display:none}.sheet-handle{height:24px;display:flex;align-items:center;justify-content:center}.sheet-handle i{width:32px;height:4px;border-radius:100px;background:#00102438}.sheet-heading{padding:12px 16px;display:flex;align-items:center;gap:10px;height:48px}.sheet-heading img{display:block;flex:none}.sheet-heading h2{font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,Arial,sans-serif;font-size:20px;font-weight:700;line-height:24px;letter-spacing:.38px;margin:0}.sheet-actions{padding:16px 16px 0}.sheet-actions button{width:343px;height:56px;border:0;border-radius:16px;background:#ffdd2d;color:#333;font-family:inherit;font-size:17px;font-weight:400;letter-spacing:-.41px;cursor:pointer}.sheet-actions button:active{background:#f5cf20}.sheet-system{height:34px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px}.sheet-system i{width:133px;height:5px;border-radius:100px;background:#000}.sheet-actions button:focus-visible{outline:3px solid #428bf9;outline-offset:3px}.panel button:disabled{cursor:default;opacity:.55}
 
 
 /* Smooth completion fill. */
 .progress i{position:relative;width:0;overflow:hidden;will-change:width}
+
+
+.task-card .caption,
+.task-card h2 { position: relative; }
+.task-card .caption { height: 16px; }
+.task-card h2 { height: 24px; }
+.task-card .caption img,
+.task-card h2 img,
+.task-prompt-art { position: absolute; display: block; }
+.task-card .caption img { left: 1.21px; top: 3.62px; }
+.task-card h2 img { left: .71px; top: 4.66px; }
+.task-prompt-art { left: .60px; top: 3.43px; }
+
+.count,
+.bubble { font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; }
+.digit { top: 0; height: 20px; line-height: 16px; background-repeat: no-repeat; }
+.digit:is([data-value="1"], [data-value="2"], [data-value="3"], [data-value="5"]),
+.count-label { color: transparent; }
+.digit[data-value="1"] { background-image: url("assets/task-counter.svg"); background-position: .96px 3.43px; }
+.digit[data-value="2"] { background-image: url("assets/task-counter-2.svg"); background-position: 1.11px 3.18px; }
+.digit[data-value="3"] { background-image: url("assets/task-counter-3.svg"); background-position: 1.03px 3.26px; }
+.digit[data-value="5"] { background-image: url("assets/task-counter-5.svg"); background-position: 1.11px 3.43px; }
+.count-label {
+  position: absolute;
+  left: .96px;
+  top: 3.43px;
+  width: 39px;
+  height: 11px;
+  background: url("assets/task-counter.svg") no-repeat;
+  clip-path: inset(0 0 0 8px);
+}
 
 .success-screen {
   position: absolute;
