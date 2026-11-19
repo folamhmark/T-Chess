@@ -44,6 +44,19 @@ a {
   text-underline-offset: 4px;
 }
 
+.preview-navigation {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+#font-status {
+  margin: 0;
+  color: #56637a;
+  font-size: 14px;
+}
+
 .view-picker {
   display: inline-flex;
   flex-wrap: wrap;
