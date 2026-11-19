@@ -12,8 +12,9 @@ function setProgress(value,animated=true){
 setProgress(0,false);
 function stop(){token++;active.forEach(a=>a.pause());active=[];anime.remove([digit,incoming,copy,bubble,...copy.querySelectorAll('.copy-char')]);bubble.style.cssText="";digit.style.cssText='';incoming.style.cssText='opacity:0';copy.style.cssText=''}
 function go(target,replay=false,keepProgress=false){
-if(finalExit)return;
+if(finalExit||successMotion.timeline)return;
 const fromCompletedRound=scene.hidden;
+success.hidden=true;
 scene.hidden=false;
 stop();if(!replay&&!keepProgress)setProgress(target-1,!fromCompletedRound);else setProgress(completed);const run=token,previous=current;current=target;const text=messages[target-1],factor=$('#slow').checked?3:1;document.querySelectorAll('[data-task]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.task===target)));nextButton.textContent='Завершить задачу';replayButton.textContent='↺ Повторить анимацию';$('#phase').textContent='Обновляем задание…';$('#duration').textContent=reduced.matches?'Без движения':fromCompletedRound?'—':`~${(455+text.replaceAll(' ','').length*18)*factor} мс`;
 const done=()=>{if(run!==token)return;digit.textContent=target;digit.style.cssText='';incoming.style.opacity=0;if(copy.textContent!==text)copy.textContent=text;copy.querySelectorAll('.copy-char').forEach(c=>{c.style.opacity='1';c.style.transform='none';c.style.filter='none'});copy.style.cssText='';bubble.style.cssText='';$('#phase').textContent=`Задача ${target} из 5`;$('#announcement').textContent=`Задача ${target} из 5. ${text}`};
@@ -27,6 +28,15 @@ const chars=[...copy.querySelectorAll('.copy-char')];active.push(anime({targets:
 const sheet=$('#result-sheet'),continueButton=$('#continue-task');
 const scene=$('.task-scene'),penguin=$('.penguin');
 const nextButton=$('#next'),replayButton=$('#replay');
+const success=$('#daily-success'),successTitle=$('#success-title'),successTap=$('#success-continue');
+const successMotion=window.successReveal.create({
+  artwork:$('.success-penguin'),
+  glow:$('.success-glow'),
+  title:successTitle,
+  subtitle:$('.success-subtitle'),
+  primary:$('.success-tap-label'),
+  canvas:$('.success-snow-reveal')
+});
 const finalMotion={drop:480,fade:420};
 let sheetOpen=false,sheetClosing=false,finalExit=null;
 const sheetControls=()=>[...document.querySelectorAll('[data-task],#next,#replay,.hint,.back')];
@@ -44,18 +54,40 @@ function finishClosing(){
   sheetControls().forEach(button=>button.disabled=false);
 }
 
+function enableSuccessTap(){
+  success.inert=false;
+  successTap.disabled=false;
+}
+
 function finishRound(){
-  finalExit?.pause();
-  finalExit=null;
-  scene.hidden=true;
-  scene.style.opacity='';
-  penguin.style.transform='';
+  successMotion.finish();
+  enableSuccessTap();
   finishClosing();
   nextButton.textContent='Начать заново';
   replayButton.textContent='↺ Повторить финал';
   $('#phase').textContent='Все задачи выполнены';
   $('#announcement').textContent='Все пять задач выполнены.';
-  nextButton.focus();
+  if(document.activeElement!==successTap)successTitle.focus({preventScroll:true});
+}
+
+function showSuccess(factor){
+  finalExit?.pause();
+  finalExit=null;
+  scene.hidden=true;
+  scene.style.opacity='';
+  penguin.style.transform='';
+  hideSheet();
+  success.hidden=false;
+  if(reduced.matches){finishRound();return}
+  success.inert=true;
+  successTap.disabled=true;
+  $('#phase').textContent='Показываем результат…';
+  successMotion.prepare({
+    factor,
+    leadIn:window.successReveal.whiteHold,
+    complete:finishRound,
+    enablePrimary:enableSuccessTap
+  }).play();
 }
 
 function closeResult(advance){
@@ -67,10 +99,11 @@ function closeResult(advance){
   const factor=$('#slow').checked?3:1;
   const sheetMotion={targets:sheet,translateY:178,duration:260*factor,easing:'cubicBezier(.4,0,.8,.2)'};
   if(advance&&current===5){
-    $('#duration').textContent=reduced.matches?'Без движения':`${(finalMotion.drop+finalMotion.fade)*factor} мс`;
-    if(reduced.matches){finishRound();return}
+    const duration=finalMotion.drop+finalMotion.fade+window.successReveal.whiteHold+window.successReveal.duration;
+    $('#duration').textContent=reduced.matches?'Без движения':`${duration*factor} мс`;
+    if(reduced.matches){showSuccess(factor);return}
     $('#phase').textContent='Завершаем задачи…';
-    finalExit=anime.timeline({autoplay:false,complete:finishRound})
+    finalExit=anime.timeline({autoplay:false,complete:()=>showSuccess(factor)})
       .add({...sheetMotion,complete:hideSheet},0)
       .add({targets:penguin,translateY:['0px','100px'],duration:finalMotion.drop*factor,easing:'cubicBezier(.42,0,.56,1)'},0)
       .add({targets:scene,opacity:[1,0],duration:finalMotion.fade*factor,easing:'easeInOutSine'},finalMotion.drop*factor);
@@ -94,6 +127,11 @@ function closeResult(advance){
 
 nextButton.onclick=()=>scene.hidden?go(1):showResult();
 continueButton.onclick=()=>closeResult(true);
+successTap.onclick=()=>{
+  if(successMotion.timeline)finishRound();
+  go(1);
+  nextButton.focus({preventScroll:true});
+};
 replayButton.onclick=()=>{
   const completedRound=scene.hidden;
   go(current,true);
@@ -106,6 +144,9 @@ reduced.addEventListener('change',()=>{
   if(!reduced.matches)return;
   setProgress(completed,false);
   if(finalExit){
+    $('#duration').textContent='Без движения';
+    showSuccess(1);
+  }else if(successMotion.timeline){
     $('#duration').textContent='Без движения';
     finishRound();
   }else if(!sheetOpen&&!scene.hidden){
