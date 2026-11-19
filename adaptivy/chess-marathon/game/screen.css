@@ -1,0 +1,192 @@
+:root {
+  color-scheme: light;
+  font-family: "Local SF Pro", "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  color: #333;
+  background: #fff;
+  --side-inset: 16px;
+  --status-height: 44px;
+  --app-bar-height: 44px;
+  --content-top: 16px;
+  --content-bottom: 35px;
+  --section-gap: 22px;
+  --card-extra-gap: 10px;
+  --card-top: 16px;
+  --card-bottom: 20px;
+  --mascot-width: 139px;
+  --bubble-padding: 12px 16px;
+  --control-size: 72px;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin-inline: auto;
+  background: linear-gradient(#e2efff, #80b2ff 34%, #fff 83.2%);
+}
+
+.status-bar { position: relative; height: var(--status-height); }
+.status-bar img { position: absolute; top: calc(50% + 1px); transform: translateY(-50%); }
+.status-time { left: 34px; }
+.status-signal { right: 18px; }
+.status-battery { right: 14px; }
+
+.app-bar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: var(--app-bar-height);
+}
+
+.back {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: flex;
+  align-items: center;
+  width: 44px;
+  padding-left: 8px;
+}
+
+.progress {
+  width: 140px;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 100px;
+  background: #0010240f;
+}
+
+.progress span { display: block; width: 50px; height: 100%; border-radius: inherit; background: #428bf9; }
+
+.game-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--section-gap);
+  padding: var(--content-top) var(--side-inset) var(--content-bottom);
+}
+
+.lesson-card {
+  margin-bottom: var(--card-extra-gap);
+  padding: var(--card-top) 20px var(--card-bottom);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 6px 34px 9px #9dc2fe;
+  overflow-wrap: anywhere;
+}
+
+.lesson-card p { margin: 0; color: #9299a2; }
+.lesson-label { font-size: 13px; line-height: 16px; font-weight: 500; text-transform: uppercase; }
+
+.lesson-card h1 {
+  margin: 4px 0 6px;
+  font-family: "Local SF Pro", "Local SF Pro Display", "SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 650;
+  letter-spacing: .38px;
+}
+
+.lesson-count { font-size: 15px; line-height: 18px; letter-spacing: -.24px; }
+
+.guide {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.penguin {
+  display: block;
+  flex: 0 0 auto;
+  align-self: flex-end;
+  width: var(--mascot-width);
+  height: auto;
+}
+
+.bubble {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: var(--bubble-padding);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 15px;
+  line-height: 18px;
+  letter-spacing: -.24px;
+  overflow-wrap: anywhere;
+}
+
+.bubble::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  width: 8px;
+  height: 32px;
+  transform: translateY(-50%);
+  background: url("assets/bubble-tail.svg") center / contain no-repeat;
+}
+
+.bubble:target, :focus-visible { outline: 2px solid #245eab; outline-offset: 2px; }
+
+.board { display: block; width: 100%; height: auto; }
+
+.controls { display: flex; align-items: center; justify-content: space-between; }
+.history-controls { display: flex; }
+
+.controls button,
+.controls a {
+  display: block;
+  width: var(--control-size);
+  height: var(--control-size);
+  padding: 0;
+  border: 0;
+  border-radius: 100px;
+  background: transparent;
+}
+
+.controls img { display: block; max-width: 100%; height: auto; }
+
+@media (max-height: 744px) {
+  :root {
+    --status-height: 24px;
+    --content-top: 8px;
+    --content-bottom: 12px;
+    --section-gap: 8px;
+    --card-extra-gap: 4px;
+    --card-top: 8px;
+    --card-bottom: 8px;
+    --mascot-width: 104px;
+    --bubble-padding: 8px 12px;
+    --control-size: 56px;
+  }
+
+  .lesson-card h1 { margin-bottom: 4px; }
+}
+
+@media (max-width: 340px), (max-height: 610px) {
+  :root {
+    --status-height: 20px;
+    --app-bar-height: 40px;
+    --content-top: 4px;
+    --content-bottom: 8px;
+    --section-gap: 6px;
+    --card-extra-gap: 2px;
+    --card-top: 6px;
+    --card-bottom: 6px;
+    --bubble-padding: 8px 12px;
+    --control-size: 48px;
+  }
+
+  .lesson-card { padding-inline: 16px; }
+  .lesson-card h1 { margin-block: 3px; }
+  .penguin, .bubble::before { display: none; }
+}

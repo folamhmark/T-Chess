@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Урок 1. Ход ладьи</title>
+  <link rel="stylesheet" href="../fonts.css">
+  <link rel="stylesheet" href="screen.css">
+</head>
+<body>
+  <main class="game-screen" aria-labelledby="marathon-title" data-figma-node="118:23931">
+    <header class="game-header">
+      <div class="status-bar" aria-hidden="true">
+        <img class="status-time" src="../onboarding/assets/time.svg" alt="" width="29" height="12">
+        <img class="status-signal" src="../onboarding/assets/signal-wifi.svg" alt="" width="63" height="10">
+        <img class="status-battery" src="../onboarding/assets/battery.svg" alt="" width="25" height="12">
+      </div>
+      <div class="app-bar">
+        <a class="back" href="../../game.html" target="_top" aria-label="Назад к сравнению размеров">
+          <img src="assets/back.svg" alt="" width="12" height="24">
+        </a>
+        <div class="progress" role="progressbar" aria-label="Прогресс урока" aria-valuenow="36"><span></span></div>
+      </div>
+    </header>
+
+    <div class="game-content">
+      <header class="lesson-card" data-figma-node="118:23935">
+        <p class="lesson-label">Новый урок</p>
+        <h1 id="marathon-title">Урок 1. Ход ладьи</h1>
+        <p class="lesson-count">Задание 2 из 5</p>
+      </header>
+
+      <div class="exercise" data-figma-node="118:23936">
+        <div class="guide">
+          <img class="penguin" src="assets/penguin.png" alt="" width="278" height="200" data-figma-node="118:23938">
+          <p class="bubble" id="game-hint" tabindex="-1" data-figma-node="216:46054">Короткий и бодрый текст подсказки, он может быть в четыре строки</p>
+        </div>
+        <img class="board" src="assets/board.svg" alt="Шахматная доска с начальной расстановкой фигур" width="343" height="343" data-figma-node="118:23941">
+      </div>
+
+      <div class="controls" data-figma-node="118:23942">
+        <div class="history-controls" role="group" aria-label="История ходов">
+          <button type="button" aria-label="Предыдущий ход" disabled><img src="assets/undo.svg" alt="" width="72" height="72"></button>
+          <button type="button" aria-label="Следующий ход" disabled><img src="assets/redo.svg" alt="" width="72" height="72"></button>
+        </div>
+        <a class="hint-control" href="#game-hint" aria-label="Подсказка"><img src="assets/hint.svg" alt="" width="72" height="72"></a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

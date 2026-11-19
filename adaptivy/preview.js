@@ -2,6 +2,7 @@ const comparison = document.querySelector('#comparison');
 const custom = document.querySelector('#custom');
 const dimensions = custom.querySelector('form');
 const frame = custom.querySelector('iframe');
+const screenTitle = document.querySelector('h1').textContent;
 const { width, height } = dimensions.elements;
 
 document.querySelector('.view-picker').addEventListener('change', (event) => {
@@ -15,7 +16,7 @@ function resizePreview() {
 
   frame.width = width.value;
   frame.height = height.value;
-  frame.title = `Onboarding · ${width.value} × ${height.value}`;
+  frame.title = `${screenTitle} · ${width.value} × ${height.value}`;
 }
 
 dimensions.addEventListener('input', resizePreview);

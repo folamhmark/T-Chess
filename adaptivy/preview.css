@@ -44,6 +44,16 @@ a {
   text-underline-offset: 4px;
 }
 
+.page-actions,
+.page-actions nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+}
+
+.page-actions [aria-current="page"] { color: #242d3c; text-decoration: none; }
+
 .preview-navigation {
   display: flex;
   align-items: center;

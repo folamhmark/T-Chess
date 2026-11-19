@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Игра · Адаптивы шахматного марафона</title>
+  <link rel="stylesheet" href="preview.css?v=game">
+  <script src="preview.js?v=game" defer></script>
+</head>
+<body>
+  <main>
+    <header class="page-header">
+      <div>
+        <p class="project">Адаптивы / Шахматный марафон</p>
+        <h1>Игра</h1>
+      </div>
+      <div class="page-actions">
+        <nav aria-label="Экраны">
+          <a href="./">Onboarding</a>
+          <a href="game.html" aria-current="page">Игра</a>
+        </nav>
+        <a href="chess-marathon/game/index.html">Открыть экран отдельно</a>
+      </div>
+    </header>
+
+    <div class="preview-navigation">
+      <fieldset class="view-picker">
+        <legend class="visually-hidden">Режим просмотра</legend>
+        <label><input type="radio" name="view" value="comparison" checked><span>Сравнить размеры</span></label>
+        <label><input type="radio" name="view" value="custom"><span>Свой размер</span></label>
+      </fieldset>
+      <p id="font-status" role="status" hidden></p>
+    </div>
+
+    <section id="comparison" class="comparison" aria-label="Сравнение размеров" tabindex="0">
+      <div class="frames">
+        <figure>
+          <figcaption>375 × 812 <span>px</span></figcaption>
+          <iframe src="chess-marathon/game/index.html" title="Игра · 375 × 812" width="375" height="812"></iframe>
+        </figure>
+        <figure>
+          <figcaption>414 × 896 <span>px</span></figcaption>
+          <iframe src="chess-marathon/game/index.html" title="Игра · 414 × 896" width="414" height="896"></iframe>
+        </figure>
+        <figure>
+          <figcaption>375 × 667 <span>px</span></figcaption>
+          <iframe src="chess-marathon/game/index.html" title="Игра · 375 × 667" width="375" height="667"></iframe>
+        </figure>
+        <figure>
+          <figcaption>320 × 568 <span>px</span></figcaption>
+          <iframe src="chess-marathon/game/index.html" title="Игра · 320 × 568" width="320" height="568"></iframe>
+        </figure>
+      </div>
+    </section>
+
+    <section id="custom" aria-label="Произвольный размер" hidden>
+      <form class="dimensions">
+        <label>Ширина, px <input name="width" type="number" inputmode="numeric" min="280" max="720" value="375" required></label>
+        <label>Высота, px <input name="height" type="number" inputmode="numeric" min="360" max="1200" value="812" required></label>
+      </form>
+      <div class="custom-frame" tabindex="0" aria-label="Предпросмотр">
+        <iframe src="chess-marathon/game/index.html" title="Игра · 375 × 812" width="375" height="812" loading="lazy"></iframe>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
