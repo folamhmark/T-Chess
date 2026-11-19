@@ -78,7 +78,7 @@ setPrompt(text,true);
 active.push(anime({targets:bubble,translateY:[8,0],scale:[.95,1],duration:440*factor,easing:'cubicBezier(.16,1,.3,1)'}));active.push(anime({targets:bubble,opacity:[0,1],duration:160*factor,easing:'cubicBezier(.2,0,0,1)'}));
 const chars=[...copy.querySelectorAll('.copy-char')];active.push(anime({targets:chars,opacity:[0,1],filter:['blur(1.2px)','blur(0px)'],delay:anime.stagger(18*factor,{start:105*factor}),duration:240*factor,easing:'cubicBezier(.22,1,.36,1)',complete:done}));}}));}
 
-const sheet=$('#result-sheet'),continueButton=$('#continue-task');
+const sheet=$('#result-sheet'),continueButton=$('#continue-task'),continueLabel=$('#continue-task-label');
 const scene=$('.task-scene'),penguin=$('.penguin');
 const nextButton=$('#next'),replayButton=$('#replay');
 const success=$('#daily-success'),successTitle=$('#success-title'),successTap=$('#success-continue');
@@ -93,7 +93,7 @@ const successMotion=window.successReveal.create({
 const finalMotion={drop:480,fade:420};
 let sheetOpen=false,sheetClosing=false,finalExit=null;
 const sheetControls=()=>[...document.querySelectorAll('[data-task],#next,#replay,.hint,.back')];
-function showResult(){if(sheetOpen)return;stop();setPrompt(messages[current-1]);setDigit(digit,current);setProgress(current);sheetOpen=true;sheetClosing=false;sheetControls().forEach(b=>b.disabled=true);continueButton.textContent=current===5?'ОК':'Ого, погнали дальше';continueButton.disabled=false;sheet.hidden=false;$('#phase').textContent='Верный ход';$('#announcement').textContent=`Верный ход. Пройдено ${completed} из 5 задач. Можно продолжить.`;const finish=()=>{if(sheetOpen&&!sheetClosing)continueButton.focus()};if(reduced.matches){sheet.style.transform='none';finish()}else active.push(anime({targets:sheet,translateY:[178,0],duration:460*($('#slow').checked?3:1),easing:'cubicBezier(.16,1,.3,1)',complete:finish}));}
+function showResult(){if(sheetOpen)return;stop();setPrompt(messages[current-1]);setDigit(digit,current);setProgress(current);sheetOpen=true;sheetClosing=false;sheetControls().forEach(b=>b.disabled=true);continueButton.dataset.final=String(current===5);continueLabel.textContent=current===5?'ОК':'Ого, погнали дальше';continueButton.disabled=false;sheet.hidden=false;$('#phase').textContent='Верный ход';$('#announcement').textContent=`Верный ход. Пройдено ${completed} из 5 задач. Можно продолжить.`;const finish=()=>{if(sheetOpen&&!sheetClosing)continueButton.focus()};if(reduced.matches){sheet.style.transform='none';finish()}else active.push(anime({targets:sheet,translateY:[178,0],duration:460*($('#slow').checked?3:1),easing:'cubicBezier(.16,1,.3,1)',complete:finish}));}
 
 function hideSheet(){
   sheet.hidden=true;

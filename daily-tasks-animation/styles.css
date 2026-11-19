@@ -13,8 +13,26 @@
 .board{position:absolute;left:16px;top:340px;width:343px;height:343px;border:1.5px solid #e8edf9;background:#e8edf9;border-radius:6px}.square{position:absolute;width:42px;height:42px;margin:2px;border-radius:2.333px;overflow:hidden}.square.light{background:#edf4ff}.square.dark{background:#c0d6f5;box-shadow:inset .534px .534px 3.737px #586b9866}.piece{position:absolute;left:50%;top:calc(50% - .58px);width:37.333px;height:37.333px;transform:translate(-50%,-50%)}.piece img{display:block;transform:scale(.98245);transform-origin:top left}
 .footer{position:absolute;left:16px;top:705px;width:343px;display:flex;justify-content:space-between;align-items:center}.footer button{padding:0;border:0;background:none;display:block;line-height:0}.history{display:flex}.footer img{display:block}.hint{cursor:pointer}
 .copy-word{display:inline-block;white-space:nowrap}.copy-char{display:inline-block;will-change:opacity,filter;vertical-align:baseline}#copy{position:relative;display:block;min-height:36px}
-.result-sheet{position:absolute;z-index:10;bottom:0;left:0;width:375px;display:flex;flex-direction:column;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 6px 34px #0000001f;will-change:transform}.result-sheet[hidden]{display:none}.sheet-handle{height:24px;display:flex;align-items:center;justify-content:center}.sheet-handle i{width:32px;height:4px;border-radius:100px;background:#00102438}.sheet-heading{padding:12px 16px;display:flex;align-items:center;gap:10px;height:48px}.sheet-heading img{display:block;flex:none}.sheet-heading h2{font-family:'SF Pro Display',-apple-system,BlinkMacSystemFont,Arial,sans-serif;font-size:20px;font-weight:700;line-height:24px;letter-spacing:.38px;margin:0}.sheet-actions{padding:16px 16px 0}.sheet-actions button{width:343px;height:56px;border:0;border-radius:16px;background:#ffdd2d;color:#333;font-family:inherit;font-size:17px;font-weight:400;letter-spacing:-.41px;cursor:pointer}.sheet-actions button:active{background:#f5cf20}.sheet-system{height:34px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px}.sheet-system i{width:133px;height:5px;border-radius:100px;background:#000}.sheet-actions button:focus-visible{outline:3px solid #428bf9;outline-offset:3px}.panel button:disabled{cursor:default;opacity:.55}
+.result-sheet{position:absolute;z-index:10;bottom:0;left:0;width:375px;display:flex;flex-direction:column;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 6px 34px #0000001f;will-change:transform}.result-sheet[hidden]{display:none}.sheet-handle{height:24px;display:flex;align-items:center;justify-content:center}.sheet-handle i{width:32px;height:4px;border-radius:100px;background:#00102438}.sheet-heading{padding:12px 16px;display:flex;align-items:center;gap:10px;height:48px}.sheet-heading img{display:block;flex:none}.sheet-heading h2{position:relative;width:116px;height:24px;margin:0}.sheet-actions{padding:16px 16px 0}.sheet-actions button{position:relative;width:343px;height:56px;border:0;border-radius:16px;background:#ffdd2d;cursor:pointer}.sheet-actions button:active{background:#f5cf20}.sheet-system{height:34px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px}.sheet-system i{width:133px;height:5px;border-radius:100px;background:#000}.sheet-actions button:focus-visible{outline:3px solid #428bf9;outline-offset:3px}.panel button:disabled{cursor:default;opacity:.55}
 
+
+
+.sheet-heading h2 img { position: absolute; left: 1.25px; top: 4.18px; }
+.sheet-continue-art { position: absolute; left: 88.44px; top: 21.74px; }
+.sheet-ok-art {
+  position: absolute;
+  display: none;
+  left: 50%;
+  top: 21.74px;
+  width: 22.75px;
+  height: 13px;
+  transform: translateX(-50%);
+}
+.sheet-ok-art span { position: absolute; top: 0; height: 13px; background-repeat: no-repeat; }
+.sheet-ok-o { left: 0; width: 12px; background-image: url("assets/sheet-continue.svg"); }
+.sheet-ok-k { left: 13.49px; width: 9.4px; background-image: url("assets/sheet-capital-k.svg"); background-position: 0 .28px; }
+#continue-task[data-final="true"] .sheet-continue-art { display: none; }
+#continue-task[data-final="true"] .sheet-ok-art { display: block; }
 
 /* Smooth completion fill. */
 .progress i{position:relative;width:0;overflow:hidden;will-change:width}
