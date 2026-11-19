@@ -8,7 +8,7 @@
 
 :root {
   color-scheme: light;
-  font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
+  font-family: "SF Pro Text", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   color: #333;
@@ -131,7 +131,7 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 
 .details h1 {
   margin: 0 0 calc(12px + var(--wide-spacing) / 2);
-  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
+  font-family: "SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
   font-size: var(--title-size);
   font-weight: 650;
   line-height: normal;
