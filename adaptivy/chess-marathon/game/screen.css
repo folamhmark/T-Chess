@@ -37,6 +37,26 @@ body { margin: 0; }
 .status-signal { right: 18px; }
 .status-battery { right: 14px; }
 
+@media (max-width: 340px), (max-height: 744px) {
+  :root { --status-height: 20px; }
+
+  .status-bar .status-time { left: 50%; transform: translate(-50%, -50%); }
+  .status-signal { left: 8px; right: auto; clip-path: inset(0 23px 0 0); }
+  .status-battery { right: 8px; }
+
+  /* Reuse the last 19 pixels of the signal image for the battery charge. */
+  .status-bar::after {
+    content: "";
+    position: absolute;
+    top: calc(50% + 1px);
+    right: 12px;
+    width: 19px;
+    height: 10px;
+    transform: translateY(-50%);
+    background: url("../onboarding/assets/signal-wifi.svg") right center no-repeat;
+  }
+}
+
 .app-bar {
   position: relative;
   display: grid;
@@ -156,7 +176,6 @@ body { margin: 0; }
 
 @media (max-height: 744px) {
   :root {
-    --status-height: 20px;
     --content-top: 8px;
     --content-bottom: 12px;
     --section-gap: 8px;
@@ -173,7 +192,6 @@ body { margin: 0; }
 
 @media (max-width: 340px), (max-height: 610px) {
   :root {
-    --status-height: 20px;
     --content-top: 4px;
     --content-bottom: 8px;
     --section-gap: 6px;
@@ -198,12 +216,6 @@ body { margin: 0; }
     --card-extra-gap: 0px;
     --card-top: 10px;
     --card-bottom: 10px;
-  }
-
-  .back {
-    inset-inline-start: calc(var(--side-inset) - 16px);
-    justify-content: center;
-    padding: 0;
   }
 
   .lesson-card {
