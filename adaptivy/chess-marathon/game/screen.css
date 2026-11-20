@@ -7,7 +7,6 @@
   background: #fff;
   --side-inset: 16px;
   --status-height: 44px;
-  --app-bar-height: 44px;
   --content-top: 16px;
   --content-bottom: 35px;
   --section-gap: 22px;
@@ -42,7 +41,7 @@ body { margin: 0; }
   position: relative;
   display: grid;
   place-items: center;
-  height: var(--app-bar-height);
+  height: 44px;
 }
 
 .back {
@@ -157,7 +156,7 @@ body { margin: 0; }
 
 @media (max-height: 744px) {
   :root {
-    --status-height: 24px;
+    --status-height: 20px;
     --content-top: 8px;
     --content-bottom: 12px;
     --section-gap: 8px;
@@ -175,7 +174,6 @@ body { margin: 0; }
 @media (max-width: 340px), (max-height: 610px) {
   :root {
     --status-height: 20px;
-    --app-bar-height: 40px;
     --content-top: 4px;
     --content-bottom: 8px;
     --section-gap: 6px;
@@ -194,7 +192,6 @@ body { margin: 0; }
 @media (max-width: 340px) and (max-height: 610px) {
   :root {
     --side-inset: 24px;
-    --app-bar-height: 44px;
     --content-top: 8px;
     --content-bottom: 12px;
     --section-gap: 8px;
