@@ -209,7 +209,10 @@ body { margin: 0; }
     padding: 0;
   }
 
-  .lesson-card { padding-inline: 12px; }
+  .lesson-card {
+    padding-inline: 12px;
+    border-radius: 16px;
+  }
   .lesson-label { display: none; }
 
   .lesson-card h1 {
