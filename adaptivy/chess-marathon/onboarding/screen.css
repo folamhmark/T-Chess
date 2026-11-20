@@ -15,12 +15,9 @@
   /* Interpolate between the 320 px layout and the 375 px source. */
   --width-delta: calc(100vw - 320px);
   --copy-inset: clamp(20px, calc(20px + var(--width-delta) * 4 / 55), 24px);
-  --copy-block: clamp(16px, calc(16px + var(--width-delta) * 4 / 55), 20px);
-  --wide-spacing: clamp(0px, calc((100vw - 375px) * 10 / 39), 10px);
   --title-size: clamp(24px, calc(24px + var(--width-delta) * 6 / 55), 30px);
   --body-size: clamp(16px, calc(16px + var(--width-delta) / 55), 17px);
   --button-inset: 16px;
-  --button-bottom: clamp(16px, calc(16px + var(--width-delta) * 8 / 55), 24px);
   --header-height: calc(var(--top-inset) + var(--app-bar));
   --snow-blur-offset: calc(53.34 * 100vw / 375);
   --snow-blur-width: calc(100% * 367 / 375);
@@ -30,6 +27,9 @@
 body { margin: 0; }
 
 .screen {
+  /* Three block gaps plus two button gaps count as seven equal units. */
+  --block-gap: clamp(0px, calc(var(--spacing-room, 70px) / 7), 10px);
+  --button-gap: calc(2 * var(--block-gap));
   position: relative;
   isolation: isolate;
   display: grid;
@@ -135,11 +135,13 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding: calc(var(--copy-block) + var(--wide-spacing)) var(--copy-inset);
+  gap: var(--block-gap);
+  padding-block: var(--block-gap) var(--button-gap);
+  padding-inline: var(--copy-inset);
 }
 
 .details h1 {
-  margin: 0 0 calc(12px + var(--wide-spacing) / 2);
+  margin: 0;
   font-family: "Local SF Pro", "Local SF Pro Display", "SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
   font-size: var(--title-size);
   font-weight: 650;
@@ -163,7 +165,7 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 }
 
 .details p {
-  margin: calc(16px + var(--wide-spacing) / 2) 0 0;
+  margin: 0;
   font-size: var(--body-size);
   line-height: 20px;
   letter-spacing: -.41px;
@@ -178,7 +180,7 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
   display: block;
   width: 100%;
   min-height: 56px;
-  margin-bottom: calc(var(--button-bottom) + var(--wide-spacing));
+  margin-bottom: var(--button-gap);
   padding: 12px 16px;
   border-radius: 16px;
   color: inherit;
@@ -190,21 +192,14 @@ button:focus-visible { outline: 2px solid #245eab; outline-offset: -3px; }
 .bottom-bar::before { content: ""; width: 133px; height: 5px; border-radius: 100px; background: black; }
 
 @media (max-height: 744px) {
-  :root {
-    --top-inset: 32px;
-    --copy-block: 8px;
-    --button-bottom: 6px;
-    --wide-spacing: 0px;
-  }
+  :root { --top-inset: 32px; }
 
   .illustration {
     --min-art-height: calc(100vw * 253 / 375);
     --bottom-crop-share: .39;
   }
 
-  .details h1 { margin-bottom: 6px; }
   .deadline { min-height: 24px; }
-  .details p { margin-top: 8px; }
 }
 
 @media (max-width: 340px) {
