@@ -78,11 +78,11 @@ setPrompt(text,true);
 active.push(anime({
   targets:bubble,
   keyframes:[
-    {translateY:[8,-2],scale:[.95,1.025],duration:240*factor,easing:'cubicBezier(.16,1,.3,1)'},
-    {translateY:0,scale:1,duration:200*factor,easing:'easeOutQuad'}
+    {translateY:[5,-.8],scale:[.975,1.009],duration:270*factor,easing:'cubicBezier(.22,.72,.36,1)'},
+    {translateY:0,scale:1,duration:170*factor,easing:'cubicBezier(.35,0,.35,1)'}
   ]
 }));
-active.push(anime({targets:bubble,opacity:[0,1],duration:160*factor,easing:'cubicBezier(.2,0,0,1)'}));
+active.push(anime({targets:bubble,opacity:[0,1],duration:210*factor,easing:'cubicBezier(.2,0,0,1)'}));
 const chars=[...copy.querySelectorAll('.copy-char')];active.push(anime({targets:chars,opacity:[0,1],filter:['blur(1.2px)','blur(0px)'],delay:anime.stagger(18*factor,{start:105*factor}),duration:240*factor,easing:'cubicBezier(.22,1,.36,1)',complete:done}));}}));}
 
 const sheet=$('#result-sheet'),continueButton=$('#continue-task'),continueLabel=$('#continue-task-label');
